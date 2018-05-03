@@ -1,0 +1,486 @@
+\documentclass[10pt,a4paper]{scrartcl}
+
+\usepackage[english]{babel}
+\usepackage{glossaries}\usepackage[xindy]{imakeidx}
+
+%Set to 0 for making without examples
+%Set to 1 for making with examples
+\gdef\conditionmacro{1}
+
+%\newenvironment{example}{
+%\ifnum\conditionmacro=1}
+%{\fi}
+
+\input{../Headerfiles/Packages}
+\input{../Headerfiles/Titles}
+\input{../Headerfiles/Commands}
+\input{../Headerfiles/ENVIRONMENTS}
+\graphicspath{{Pictures/}}
+\parindent 0pt
+
+\title{Informatics}
+\author{GianAndrea Müller}
+
+\newtheorem{define}{Definition}
+
+\makenoidxglossaries
+\newglossaryentry{Algorithm}{name={Algorithm},description={An algorithm is a set of rules that defines a sequence of operations to get to the solution of a problem.}}
+\newglossaryentry{Language}{name={Language},description={A programming language is a set of instructions for a computer that can be used to write programs that implement algorithms.}}
+\newglossaryentry{Syntax}{name={Syntax},description={The syntax of a computer language is the set of rules that defines the combinations of symbols that are considered to be a correctly structured document or fragment in that language. Is a program grammatically correct?}}
+\newglossaryentry{Semantics}{name={Semantics},description={The semantics of a computer language define how the language has to be interpreted. What is the meaning of a certain program?}}
+\newglossaryentry{Editor}{name={Editor},description={A program that allows writing code. There exist powerful editors that can check syntactical correctness on the fly.}}
+\newglossaryentry{Compiler}{name={Compiler},description={A compiler translates a program written in a programming language to machine code, such that it can be executed by the machine.}}
+\newglossaryentry{Computer}{name={Computer},description={A computer is a device that is capable of executing machine code.}}
+\newglossaryentry{Comments}{name={Comments},description={Comments document the implemented algorithm within the program for the reader. They are ignored by the compiler.}}
+\newglossaryentry{IncDir}{name={Include Directives},description={Include directives specify the additional libraries used in a program.}}
+\newglossaryentry{Main}{name={The main function},description={The main function exists in every cpp-program. It is unique and contains the all instructions necessary to execute the program.}}
+\newglossaryentry{Statement}{name={Statement},description={Statements are the building blocks of a program. They are executed sequentially and end with a semicolon.}}
+\newglossaryentry{Declaration}{name={Declaration},description={A declaration introduces a new name to the program.}}
+\newglossaryentry{Definition}{name={Definition},description={A definition introduces a body to a name within the program.}}
+\newglossaryentry{Initialization}{name={Initialization},description={An initialization introduces a value to a defined name and body.}}
+\newglossaryentry{Literals}{name={Literals},description={Literals represent constant value within the program. They have a defined type and value.}}
+\newglossaryentry{Variables}{name={Variables},description={Variables represent possibly changing values within the program. They have name, type, value and address.}}
+\newglossaryentry{Objects}{name={Objects},description={Objects represent values in the computer memory. They have type, adress and value. They can be named, but can also be anonymous. Described less generally an object can be a variable, a data structure, a function, or a method.}}
+\newglossaryentry{Expressions}{name={Expressions},description={Expressions represent calculations. They are a combination of values, literals, operators and functions. They are primary if they consist of a single name/literal. Otherwise they are compound. They have type and value.}}
+\newglossaryentry{Lvalue}{name={Lvalue},description={An lvalue is a changeable expression that has an address.}}
+\newglossaryentry{Rvalue}{name={Rvalue},description={An rvalue is an expression that is not an lvalue. An rvalue cannot be changed. Every lvalue can be used as an rvalue but not vice-versa.}}
+\newglossaryentry{Operator}{name={Operator},description={An operator connects expressions to compound expressions. It specifies the expected operand in type and if it is an rvalue or an lvalue. Operators have an arity.}}
+\newglossaryentry{Arity}{name={Arity},description={Arity is the number of arguments or operands an operator or a function takes. For example there exist unary and binary operators.}}
+
+\begin{document}
+\begin{multicols*}{4}
+\maketitle
+\tableofcontents
+\end{multicols*}
+
+\begin{multicols*}{2}
+
+%Nice to know
+\newcommand{\ntn}[1]{\textcolor{blue}{#1}}
+
+\ifnum\conditionmacro=1
+\section{How to...}
+
+\subsection{\ntn{... use this summary}}
+
+This summary is an overview of the functionality of \verb.C++. in connection with the informatics course for mechanical engineers. It covers the content of the lectures but also contains additional information.
+
+To emphasize the connection to the lecture all chapters containing purely additional information are marked in blue.
+
+\subsection{\ntn{... correct compilation errors}}
+
+Read error messages, review basic syntax, look for the additional semicolon.
+
+\subsection{\ntn{... correct runtime errors}}
+
+Use a \easyurl{debugger}{https://www.visualstudio.com/de/thank-you-downloading-visual-studio/?sku=Community&rel=15}.
+
+\subsection{... approach problems}
+
+\begin{enumerate}
+\item Define your problem.
+\item Find your algorithm.
+\item Code feature.
+\item Compile.
+\item \verb+goto+ 3.
+\end{enumerate}
+
+\subsection{... find more information}
+
+\begin{itemize}
+\item \easyurl{Comprehensive Tutorial}{https://www.tutorialspoint.com/cplusplus/index.htm}
+\item \easyurl{User friendly documentation}{http://www.cplusplus.com}
+\item \easyurl{Extensive technical documentation}{http://en.cppreference.com/w/}
+\end{itemize}
+\fi
+
+%Add all entries to glossary even though unused
+\glsaddall
+
+\printnoidxglossary[sort=def,title={Terms},nonumberlist=true,nopostdot=true]
+
+\section{Positional Notation}
+
+\subsection{Binary numbers}
+
+\subsubsection{Floating point numbers}
+
+\subsection{Hexadecimal numbers}
+
+\section{Syntax}
+
+\subsection{Basic program}
+
+\begin{TPCpp}
+#include <iostream>
+//#include "local_header_file.h"
+
+/*
+ * Function declarations (and definitions)
+ */
+
+int main(int argc, char ** argv)
+{
+	  /*
+	   * Function calls
+	   */
+    std::cout << "Hello World!" << std::endl;
+    return 0;
+}
+
+/*
+ * Function definitions
+ */
+\end{TPCpp}
+
+\subsection{Identifiers}
+
+A valid identifier, i.e. the name of a variable is:
+
+\begin{itemize}
+\item an arbitrarily long sequence of digits, underscores, lowercase and uppercase Latin letters.
+\item not starting with a digit.
+\item not starting with two or more underscores.
+\item not starting with an underscore followed by a capital letter.
+\item not a \easyurl{keyword}{http://en.cppreference.com/w/cpp/keyword} of cpp.
+\end{itemize}
+
+\ifnum\conditionmacro=1
+More information on \easyurl{Identifiers}{http://en.cppreference.com/w/cpp/language/identifiers}.
+\fi
+
+\subsection{Comments}
+
+C++ allows masking code such that it is not interpreted as part of the program. This enables documenting the program. There are different possibilities:
+
+\begin{TPCpp}
+// normal comment
+
+/*
+multi
+line
+comment
+*/
+\end{TPCpp}
+
+Both versions can be nested:
+
+\begin{TPCpp}
+///*comment in a comment*/
+
+/*
+cout<<"Hello World!<<endl; //comment in a comment
+*/
+\end{TPCpp}
+
+\subsection{Data Types}
+
+\subsubsection{Primitive Types}
+
+\ifnum\conditionmacro=1
+\begin{TTable}[1]
+{ll}
+Type&Keyword\\\midrule
+Boolean&bool\\
+Character&char\\
+Integer&int\\
+Floating point&float\\
+Double floating point&double\\
+Valueless&void\\
+\end{TTable}
+\fi
+
+\subsubsection{Type modifiers}
+
+\ifnum\conditionmacro=1
+There exist a number of type modifiers:
+
+\begin{TTable}[1]
+{ll}
+Modifier&Effect\\\midrule
+signed&variable interpreted as signed\\
+unsigned&variable interpreted as unsigned\\
+short&half number of allocated bits if possible\\
+long&double number of allocated bits if possible\\
+\end{TTable}
+
+Based on the primitive types and their modifiers the spectrum of available types can be established. Their sizes differ depending on compiler and environment.
+\fi
+
+\begin{TTable}[1]
+{llc}
+Modifier&Typical Bit Width&Typical Range\\\midrule
+char&1byte&-127 to 127\\
+unsigned char&1byte&0 to 255\\
+signed char&1byte&-127 to 127\\
+int&4byte&-2'147'483'648 to 2'147'483'647\\
+unsigned int&4bytes&0 to 4'294'967'295\\
+signed int&4bytes&-2'147'483'648 to 2'147'483'647\\
+short int&2bytes&-32'768 to 32'767\\
+unsigned short int&2bytes&0 to 65'535\\
+signed short int&2bytes&-32'768 to 32'767\\
+long int&4bytes&-2'147'483'648 to 2'147'483'647\\
+signed long int&4bytes&-2'147'483'648 to 2'147'483'647\\
+unsigned long int&4bytes&0 to 4'294'967'295\\
+float&4bytes&+/- 3.4e +/- 38 (~7 digits)\\
+double&8bytes&+/- 1.7e +/- 308 (~15 digits)\\
+long double&8bytes&+/- 1.7e +/- 308 (~15 digits)\\
+\end{TTable}
+
+\ifnum\conditionmacro=1
+\subsubsection{\ntn{Find type sizes on your system}}
+\begin{TPCpp}
+#include <iostream>
+using namespace std;
+
+int main() {
+   cout<< "Size: char : "<<sizeof(char)<<endl;
+   cout<< "Size: int : "<<sizeof(int)<<endl;
+   cout<< "Size: short int : "<<sizeof(short int)<<endl;
+   cout<< "Size: long int : "<<sizeof(long int)<<endl;
+   cout<< "Size: float : "<<sizeof(float)<<endl;
+   cout<< "Size: double : "<<sizeof(double)<<endl;
+   
+   return 0;
+}
+\end{TPCpp}
+\fi
+
+\subsubsection{Type qualifiers}
+%const volatile restrict
+
+\subsubsection{Storage classes}
+%auto register static extern mutable
+
+\subsubsection{Lvalues and Rvalues}
+
+\subsubsection{Variable Definition}
+
+\subsubsection{union}
+
+\subsubsection{enum}
+
+\section{Variable Scope}
+
+\subsection{Local Variables}
+
+\subsection{Global Variables}
+
+\section{Literals}
+
+\subsection{Integer Literals}
+
+\subsection{Floating-point Literals}
+
+\subsection{Boolean Literals}
+
+\subsection{Character Literals}
+
+\subsection{String Literals}
+
+\subsection{Defining constants}
+
+\subsubsection{\#define}
+
+\subsubsection{const}
+
+\section{Operators}
+
+\subsection{Arithmetic Operators}
+
+\subsection{Relational Operators}
+
+\subsection{Logical Operators}
+
+\subsection{Bitwise Operators}
+
+\subsection{Assignment Operators}
+
+\subsection{Misc Operators}
+
+\subsection{Operator Precedence and Associativity}
+
+\begin{TTable*}{|c|lp{0.5\linewidth}|l|}{\small}
+P.&Operator&Description&Associativity\\\hline
+1&\verb+::+&Scope resolution&\multirow{6}{*}{Left-to-right}\\\cline{1-3}
+\multirow{5}{*}{2}&\verb.a++ a--.&Suffix/postfix increment and decrement&\\
+&\verb.type() type{}.&Functional cast&\\
+&\verb.a().&Function call&\\
+&\verb.a[].&Subscript&\\
+&\verb+. ->+&Member access&\\\hline
+\multirow{9}{*}{3}&\verb.++a --a.&Prefix increment and decrement&\multirow{9}{*}{Right-to-left}\\
+&\verb.+a -a.&Unary plus and minus&\\
+&\verb.! ~.&Locigal NOT and bitwise NOT&\\
+&\verb.(type).&C-style cast&\\
+&\verb.*a.&Dereference&\\
+&\verb.&a.&Adress-of&\\
+&\verb.sizeof.&Size-of&\\
+&\verb.new new[].&Dynamic memory allocation&\\
+&\verb.delete delete[].&Dynamic memory deallocation&\\\hline
+4&\verb+.* ->*+&Pointer-to-member&\multirow{11}{*}{Left-to-right}\\
+5&\verb+a*b a/b a%b+&Multiplication, division, remainder&\\\cline{1-3}
+6&\verb.a+b a-b.&Addition and subtraction&\\\cline{1-3}
+7&\verb.<< >>.&Bitwise left shift and right shift&\\\cline{1-3}
+8&\verb.<=>.&Three-way comparison operator&\\\cline{1-3}
+9&\verb.< <= > >=.&Relational operators&\\\cline{1-3}
+10&\verb.== !=.&Relational operators&\\\cline{1-3}
+11&\verb.&.&Bitwise AND&\\\cline{1-3}
+12&\verb.^.&Bitwise XOR&\\\cline{1-3}
+13&\verb.|.&Bitwise OR&\\\cline{1-3}
+14&\verb.&&.&Logical AND&\\\cline{1-3}
+15&\verb.||.&Logical OR&\\\hline
+\multirow{7}{*}{16}&\verb.a?b:c.&Ternary conditional&\multirow{7}{*}{Right-to-left}\\
+&\verb.throw.&throw operator&\\
+&\verb.=.&Direct assignment&\\
+&\verb.+= -=.&\multirow{4}{*}{Compound assignments}&\\
+&\verb.*= /= %=.&&\\
+&\verb.<<= >>=.&&\\
+&\verb.&= ^= |=.&&\\\hline
+17&\verb.,.&Comma&Left-to-right\\
+\end{TTable*}
+
+\ifnum\conditionmacro=1
+\subsubsection{How to use this table}
+
+\begin{TPCpp}
+cout<<a&&b;    //(cout<<a)&&b;
+
+*p++           //*(p++);
+
+a = b = c = d; //a = (b =(c = d)));
+
+a + b - c;     //(a + b) - c;
+
+delete ++*p;   //delete(++(*p))
+\end{TPCpp}
+
+\begin{enumerate}
+\item By its precedence \verb+<<+ is evaluated before \verb+&&+.
+\item By its precedence \verb.++. is evaluated before \verb.*..
+\item Operators with the same precedence are evaluated based on their associativity. For right-to-left associative operators as \verb+=+, the evaluation proceeds from right to left.
+
+Thus the assignments made in line 5 are in the order of their execution: \verb+c = d;+ which returns a reference to \verb+c+, \verb+b = c;+ which returns a reference to \verb+b+ and \verb+a = b;+.
+\item Operators with the same precedence are evaluated based on their associativity. For left-to-right associative operators as \verb-+- and \verb+-+ the evaluation proceeds from left to right.
+\item \verb.++()., \verb.*(). and \verb+delete+ have the same precedence, and are thus evaluated based on their associativity, which is right-to-left. Therefore \verb.++(). is evaluated after \verb.*(). and \verb+delete+ is evaluated last.
+\end{enumerate}
+\fi
+
+
+\section{Loop Types}
+
+\subsection{while}
+
+\subsection{for}
+
+\subsection{do...while}
+
+\subsection{Loop Control Statements}
+%break continue goto
+
+\section{Conditional Statements}
+
+\subsection{if}
+
+\subsection{if...else}
+
+\subsection{switch}
+
+\subsection{? : Operator}
+
+\section{Functions}
+
+\subsection{Structure}
+
+\subsection{Declaration and Definition}
+
+\subsection{Calling a function}
+
+\subsection{Function Arguments}
+
+\subsubsection{Call by Value}
+
+\subsubsection{Call by Reference}
+%and by pointer - both in same category?
+
+\subsubsection{Default Values for Parameters}
+
+\subsection{Recursion}
+
+\subsection{Inline Functions}
+
+\section{Arrays}
+
+\section{vector}
+
+\section{Strings}
+
+\subsection{C-Style Character String}
+
+\subsection{string}
+
+\section{Pointers}
+
+\section{References}
+
+\section{Input/Output}
+
+\section{struct}
+
+\section{class}
+
+\subsection{Class Members}
+
+\subsection{Class Access Modifiers}
+
+\subsection{Constructor and Destructor}
+
+\subsection{Copy Constructor}
+
+\subsection{friend}
+
+\subsection{this}
+
+\subsection{Static Members}
+
+\section{Inheritance}
+
+\subsection{Access Control and Inheritance}
+
+\section{Overloading}
+
+\subsection{Function overloading}
+
+\subsection{Operator overloading}
+
+\subsubsection{Overloadable operators}
+
+\section{Polymorphism}
+
+\section{Dynamic Memory}
+
+\section{Namespaces}
+
+\section{Templates}
+
+\section{Preprocessor}
+
+\section{Signal Handling}
+
+\section{Standard Template Library}
+
+\section{Libraries}
+
+\subsection{iostream}
+
+\subsection{math}
+
+\subsection{ctime}
+
+
+
+
+
+
+
+\end{multicols*}
+\end{document}
