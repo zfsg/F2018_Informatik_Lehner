@@ -46,6 +46,7 @@
 \newglossaryentry{Rvalue}{name={Rvalue},description={An rvalue is an expression that is not an lvalue. An rvalue cannot be changed. Every lvalue can be used as an rvalue but not vice-versa.}}
 \newglossaryentry{Operator}{name={Operator},description={An operator connects expressions to compound expressions. It specifies the expected operand in type and if it is an rvalue or an lvalue. Operators have an arity.}}
 \newglossaryentry{Arity}{name={Arity},description={Arity is the number of arguments or operands an operator or a function takes. For example there exist unary and binary operators.}}
+\newglossaryentry{Block}{name={Block},description={A block in c++ is a number of lines of code enclosed by curly brackets.}}
 
 \begin{document}
 \begin{multicols*}{4}
@@ -98,6 +99,149 @@ Use a \easyurl{debugger}{https://www.visualstudio.com/de/thank-you-downloading-v
 \glsaddall
 
 \printnoidxglossary[sort=def,title={Terms},nonumberlist=true,nopostdot=true]
+
+\section{\ntn{Nice to know}}
+
+\subsection{\ntn{Preprocessor directives}}
+
+Preprocessor directives are lines preceded by a \verb+#+. These lines are not program statements but directives for the preprocessor, thus are evaluated before the program is compiled.
+These preprocessor directives extend only across a single line of code. As soon as a newline character is found, the preprocessor directive is ends. No semicolon (;) is expected at the end of a preprocessor directive. The only way a preprocessor directive can extend through more than one line is by preceding the newline character at the end of the line by a backslash (\textbackslash).
+
+\subsubsection{\ntn{Macro Definitions}}
+
+\begin{TPCpp}
+#define identifier replacement
+\end{TPCpp}
+
+When the preprocessor encounters this directive it replaces any occurrence of \verb+identifier+ in the rest of the code by \verb+replacement+. A macro lasts until it is undefined with \verb+#undef+. As seen in the following example it is also possible to define functions:
+
+\begin{TPCpp}
+//A simple constant
+#define TABLE_SIZE 100
+int table1 [TABLE_SIZE];
+#undef TABLE_SIZE //lasts until here
+
+//A function
+#define getmax(a,b) a>b?a:b
+
+int main(){
+	int x = 5, y;
+	y = getmax(x,2); //replaced as: y = x>2?x:2
+}
+
+}
+\end{TPCpp}
+
+This would replace any occurrence of \verb+getmax+ followed by two arguments by the replacement expression, but also replace each identifier by its respective argument.
+
+\begin{TPCpp}
+#define str(x) #x
+
+cout<<str(test); // replaced as: cout<<"test";
+\end{TPCpp}
+
+As seen above an identifier preceded by \verb+#+ will be replaced by the argument in double quotes.
+
+\begin{TPCpp}
+#define glue(a,b) a ## b
+glue(c,out) << "test"; //replaced as: cout << "test";
+\end{TPCpp}
+
+The operator \verb+##+ concatenates two arguments leaving no white space between them.
+
+\subsubsection{\ntn{Conditional inclusions}}
+
+The directives \verb+#ifdef+, \verb+#ifndef+, \verb+#if+, \verb+#endif+, \verb+#else+ and \verb+#elif+ allow to include or discard part of the code if a certain condition is met.
+
+\verb+#ifdef+ allows a section of a program to be compiled only if the macro that is specified as the parameter has been defined, no matter which its value is. \verb+#endif+ ends the conditional block.
+
+\begin{TPCpp}
+#ifdef TABLE_SIZE
+int table[TABLE_SIZE];
+#endif
+\end{TPCpp}
+
+\verb+#ifndef+ serves for the exact opposite: the code between \verb+#ifndef+ and \verb+#endif+ directives is only compiled if the specified identifier has not been defined yet.
+
+\begin{TPCpp}
+#ifndef TABLE_SIZE
+#define TABLE_SIZE 100
+#endif
+int table[TABLE_SIZE];
+\end{TPCpp}
+
+The \verb+#if+, \verb+#else+ and \verb+#elif+ directives serve to specify some condition to be met in order for the portion of code they surround to be compiled. The condition that follows \verb+#if+ and \verb+#elif+ can only evaluate constant expressions, including macro expressions.
+
+\begin{TPCpp}
+#if TABLE_SIZE>200
+#undef TABLE_SIZE
+#define TABLE_SIZE 200
+
+#elif TABLE_SIZE<50
+#undef TABLE_SIZE
+#define TABLE_SIZE 50
+
+#else
+#undef TABLE_SIZE
+#define TABLE_SIZE 100
+#endif
+
+int table[TABLE_SIZE];
+\end{TPCpp}
+
+Notice that the compelling advantage of preprocessor directives over normal conditional statements is that preprocessor directives are evaluated before the code is compiled. An interesting application of that concept is the making of different versions of a program, for instance one version that has special debugging precautions and a second version which runs faster but omits these safety measures.
+
+\subsubsection{\ntn{Line control}}
+
+ When we compile a program and some error happens during the compiling process, the compiler shows an error message with references to the name of the file where the error happened and a line number, so it is easier to find the code generating the error.
+
+The \verb+#line+ directive allows us to control both things, the line numbers within the code files as well as the file name that we want that appears when an error takes place.
+
+\begin{TPCpp}
+//#line number "filename"
+
+#line 20 "assigning variable"
+int a?;
+\end{TPCpp}
+
+This code will generate an error that will be shown as error in file \verb+"assigning variable", line 20+.
+
+\subsubsection{\ntn{Error directive}}
+
+The \verb+#error+ directive aborts the compilation process when it is found, generating a compilation error that can be specified as its parameter.
+
+\begin{TPCpp}
+#ifndef _cplusplus
+#error A C++ compiler is required!
+#endif
+\end{TPCpp}
+
+\subsubsection{\ntn{Source file inclusion}}
+
+The \verb+#include+ directive is replace by the entire content of the specified header or file. There are two ways to use \verb+#include+:
+
+\begin{TPCpp}
+#include <header>
+#include "file"
+\end{TPCpp}
+
+In the first case, a header is specified between angle-brackets $<>$. This is used to include headers provided by the implementation, such as the headers that compose the standard library (iostream, string,...). Whether the headers are actually files or exist in some other form is implementation-defined, but in any case they shall be properly included with this directive.
+
+The syntax used in the second \verb+#include+ uses quotes, and includes a file. The file is searched for in an implementation-defined manner, which generally includes the current path. In the case that the file is not found, the compiler interprets the directive as a header inclusion, just as if the quotes (``'') were replaced by angle-brackets ($<>$).
+
+\subsubsection{\ntn{Pragma directive}}
+
+This directive is used to specify diverse options to the compiler. These options are specific for the platform and the compiler you use. Consult the manual or the reference of your compiler for more information on the possible parameters that you can define with \verb+#pragma+.
+
+\subsubsection{\ntn{Predefined macro names}}
+
+\begin{TTable}[1]{lp{0.7\linewidth}}
+\verb+__LINE__+&	Integer value representing the current line in the source code file being compiled.\\
+\verb+__FILE__+&	A string literal containing the presumed name of the source file being compiled.\\
+\verb+__DATE__+&A string literal in the form ``Mmm dd yyyy'' containing the date in which the compilation process began.\\
+\verb+__TIME__+&A string literal in the form ``hh:mm:ss'' containing the time at which the compilation process began.\\
+\verb+__cplusplus+&An integer value. All C++ compilers have this constant defined to some value. Its value depends on the version of the standard supported by the compiler.\\
+\end{TTable}
 
 \section{Positional Notation}
 
@@ -246,57 +390,350 @@ int main() {
 \end{TPCpp}
 \fi
 
-\subsubsection{Type qualifiers}
+\subsubsection{Type qualifiers: const \ntn{volatile restrict}}
 %const volatile restrict
 
-\subsubsection{Storage classes}
+\begin{TTable}{lp{0.7\linewidth}}
+\verb+const+&Objects of type \verb+const+ cannot be changed by the program during execution.\\
+\verb+volatile+&The modifier \verb+volatile+ tells the compile that a variable's value may be changed in ways not explicitly specified by the program. (Imagine for instance manually changing the position of a switch on a microprocessor.)\\
+\verb+restrict+&A pointer qualified by \verb+restrict+ is initially the only means by which the object it points to can be accessed.\\
+\end{TTable}
+
+\subsubsection{\ntn{Storage classes}}
 %auto register static extern mutable
 
-\subsubsection{Lvalues and Rvalues}
+A storage class defines the scope (visibility) and life-time of variables and/or functions within a C++ Program. These specifiers precede the type that they modify.
+
+\paragraph{\ntn{auto}}
+
+The auto storage class is the default storage class for all local variables.
+
+\paragraph{\ntn{register}}
+
+The register storage class is used to define local variables that should be stored in a register instead of RAM. This means that the variable has a maximum size equal to the register size (usually one word) and can't have the unary '\&' operator applied to it (as it does not have a memory location).
+
+The register should only be used for variables that require quick access such as counters. It should also be noted that defining 'register' does not mean that the variable will be stored in a register. It means that it MIGHT be stored in a register depending on hardware and implementation restrictions.
+
+\paragraph{\ntn{static}}
+
+The static storage class instructs the compiler to keep a local variable in existence during the life-time of the program instead of creating and destroying it each time it comes into and goes out of scope. Therefore, making local variables static allows them to maintain their values between function calls.
+
+The static modifier may also be applied to global variables. When this is done, it causes that variable's scope to be restricted to the file in which it is declared.
+
+In C++, when static is used on a class data member, it causes only one copy of that member to be shared by all objects of its class.
+
+\paragraph{\ntn{extern}}
+
+The extern storage class is used to give a reference of a global variable that is visible to ALL the program files. When you use 'extern' the variable cannot be initialized as all it does is point the variable name at a storage location that has been previously defined.
+
+When you have multiple files and you define a global variable or function, which will be used in other files also, then extern will be used in another file to give reference of defined variable or function. Just for understanding extern is used to declare a global variable or function in another file.
+
+The extern modifier is most commonly used when there are two or more files sharing the same global variables or functions as explained below.
+
+\paragraph{\ntn{mutable}}
+
+The mutable storage class only applies to non-static class members of non-reference and non-const type. When a class member is declared mutable it can be changed by const member functions.
 
 \subsubsection{Variable Definition}
 
-\subsubsection{union}
+A variable definition tells the compiler where and how much storage to create for the variable. A variable definition specifies a data type and name. Type has to be either a primitive type or a user defined object. Multiple names can be introduced at once if separated by commas.
 
-\subsubsection{enum}
+\begin{TPCpp}
+int i,j,k;
+\end{TPCpp}
+
+This line both declares and defines the variables i,j and k.
+Direct initialization is also possible:
+
+\begin{TPCpp}
+int d = 3, f = 2;
+\end{TPCpp}
+
+\textbf{If a variable is left uninitialized its value is undefined in general}. However, variables with static storage duration are implicitly set to 0.
+
+\subsubsection{\ntn{Variable Declaration}}
+
+It is possible to declare a variable without defining it. The declaration is accepted during compilation but has to be fitted with a definition at the time of linking of the program. This means that if a program consists of multiple files you can declare your variable wherever you need it but only define it once, since multiple definitions of the same variable are prohibited.
+
+\begin{TPCpp}
+//Variable declaration
+extern int a,b; //Compiler knows that the variable exists
+
+//Variable definition
+int a,b; //Compiler knows that the variable exists
+         //And allocates the storage space needed
+\end{TPCpp}
+
+\subsubsection{\ntn{typedef} and using}
+
+You can create a new name for an existing type with \verb+using+ or \verb+typedef+:
+
+\begin{TPCpp}
+//typedef type newname;
+
+typedef unsigned int uint;
+
+//using newname = type;
+
+using uchar = unsigned char;
+
+uint a = 3; //a is an unsigned int
+
+uchar b = '2'; //b is an unsigned char
+\end{TPCpp}
+
+\subsubsection{\ntn{union}}
+
+A union is a special class type that can hold only one of its non-static data members at a time. The union is only as big as necessary to hold its largest data member. The other data members are allocated in the same bytes as part of that largest member. The details of that allocation are implementation-defined, and it's undefined behavior to read from the member of the union that wasn't most recently written.
+
+\subsubsection{\ntn{enum}}
+
+An enumerated type declares an optional type name and a set of zero or more identifiers that can be used as values of the type. This can improve readability of the code as values are given meaning.
+
+\begin{TPCpp}
+//enum enum-name {list of names} var-list;
+
+enum day {mon, tue, wed, thu, fri, sat, sun} today;
+today = mon; //today == 0
+today = sun; //today == 6
+\end{TPCpp}
+
+The values assigned to the names start with zero and increment by default. But you can also directly assign values:
+
+\begin{TPCpp}
+enum color {red, green = 5, blue};
+color c;
+c = red;    //c == 0
+c = green;  //c == 5
+c = blue;   //c == 6
+\end{TPCpp}
 
 \section{Variable Scope}
 
+A scope is a region of the program within which variable definitions persist. There are three types of scopes:
+
+\begin{enumerate}
+\item Inside a function or a block (local variables)
+\item In the definition of function parameters (formal parameters)
+\item Outside of all functions (global parameters)
+\end{enumerate}
+
 \subsection{Local Variables}
 
-\subsection{Global Variables}
+Variables that are defined within a function or a block can only be used by statements within that same function or block.
+
+\begin{TPCpp}
+for(int i = 0; i<3; i++){ //scope of the variable i
+	std::cout<<i<<" ";
+} //end of scope
+
+// std::cout<<i; will result in error
+\end{TPCpp}
+
+\ifnum\conditionmacro=1
+
+A variable can be redefined within a block. In that case the ``closer'' definition is used.
+
+\begin{TPCpp}
+int i = 5;
+{
+	int i = 3;
+	std :: cout << i; // outputs 3
+}
+std :: cout << i; // outputs 5
+\end{TPCpp}
+\fi
+
+\subsection{\ntn{Global Variables}}
+
+Global variables are defined outside of all the functions, usually on top of the program. They will hold their value throughout the life-time of your program. This also mean that all functions within your program can access these variables.
+
+\ifnum\conditionmacro=1
+
+Including global variables the case of maximum complication, however undesired, is the following:
+
+\begin{TPCpp}
+#include <iostream>
+using namespace std;
+
+int i = 2;
+
+void fun(){
+	cout<<i;
+}
+
+int main(){
+	int i = 5;
+	{
+		int i = 3;
+		std :: cout << i;   // outputs 3
+	}
+	std :: cout << i;     // outputs 5
+	fun();                // outputs 2
+}
+\end{TPCpp}
+\fi
 
 \section{Literals}
 
 \subsection{Integer Literals}
 
+An integer literal can be a binary, decimal, octal or hexadecimal constant. A prefix specifies the base: \verb+0b+ for binary, \verb+0+ for octal, \verb+0x+ for hexadecimal and nothing for decimal.
+
+An integer literal can also have a suffix that is a combination of u (unsigned) and l (long).
+
+\ifnum\conditionmacro=1
+\begin{TPCpp}
+212     // Decimal number
+212ul   // Long unsigned decimal number
+0xFeeL  // Long hexadecimal number
+0b101   // Binary representation of 5
+011     // Octal representation of 9
+078     // Illegal: 8 is not an octal digit
+\end{TPCpp}
+\fi
+
 \subsection{Floating-point Literals}
+
+A floating point literal has an integer part, a decimal point, a fraction part and an exponent part. You can represent floating point literals either in decimal form or exponential form.
+
+While representing using decimal form, you must include the decimal point, the exponent, or both and while representing using exponential form, you must include the integer part, the fractional part, or both. The signed exponent is introduced by e or E.
+
+\ifnum\conditionmacro=1
+\begin{TPCpp}
+3.14195      // Decimal representation of pi
+314195E-5L   // Exponential representation of pi
+510E         // Illegal: incomplete exponent
+210f         // Illegal: no decimal or exponent
+.e55         // Illegal: missing integer or fraction
+\end{TPCpp}
+\fi
 
 \subsection{Boolean Literals}
 
+There are two Boolean literals and the are part of standard C++ keywords: \verb+true+ and \verb+false+.
+
+\ifnum\conditionmacro=1
+\begin{TPCpp}
+bool a = true;
+cout<<a; //outputs 1
+a = false;
+cout<<a; //outputs 0
+bool = some_integer; //true for some_integer != 0
+\end{TPCpp}
+\fi
+
+The conversion from integer to bool results in \verb+true+ for all nonzero values and in \verb+false+ for zero.
+
 \subsection{Character Literals}
+
+Character literals are enclosed in single quotes ('). A character literal can be a plain character ('x'), an escape sequence ('\verb+\t+') or a universal character ('\verb+\u02C0+').
+
+\begin{TTable}[1]{ll}
+\verb+\\+&\verb+\\+ character\\
+\verb+\'+&' character\\
+\verb+\"+&'' character\\
+\verb+\?+&? character\\
+\verb+\a+&Alert or bell\\
+\verb+\b+&Backspace\\
+\verb+\f+&Form feed\\
+\verb+\n+&Newline\\
+\verb+\r+&Carriage return\\
+\verb+\t+&Horizontal tab\\
+\verb+\v+&Vertical tab\\
+\end{TTable}
 
 \subsection{String Literals}
 
-\subsection{Defining constants}
-
-\subsubsection{\#define}
-
-\subsubsection{const}
+String literals are enclosed in double quotes. A string contains any combination of plain characters escape sequences and universal characters.
 
 \section{Operators}
 
 \subsection{Arithmetic Operators}
 
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.+.&Adds two operands\\
+\verb.-.&Subtracts the second operand from the first\\
+\verb.*.&Multiplies both operands\\
+\verb./.&Divides the first operand by the second\\
+\verb.%.&Returns the remainder of an integer division of the two operators\\
+\verb.++.&Increases an integer value by one\\
+\verb.--.&Decreases an integer value by one\\
+\end{TTable}
+
 \subsection{Relational Operators}
+
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.==.&Checks if the values of two operands are equal or not, if yes then condition becomes true.\\
+\verb.!=.&Checks if the values of two operands are equal or not, if values are not equal then condition becomes true.\\
+\verb.>.&Checks if the value of left operand is greater than the value of right operand, if yes then condition becomes true.\\
+\verb.<.&Checks if the value of left operand is less than the value of right operand, if yes then condition becomes true.\\
+\verb.>=.&Checks if the value of left operand is greater than or equal to the value of right operand, if yes then condition becomes true.\\
+\verb.<=.&Checks if the value of left operand is less than or equal to the value of right operand, if yes then condition becomes true.\\
+\end{TTable}
 
 \subsection{Logical Operators}
 
-\subsection{Bitwise Operators}
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.&&.&Called Logical AND operator. If both the operands are non-zero, then condition becomes true.\\
+\verb.||.&Called Logical OR Operator. If any of the two operands is non-zero, then condition becomes true.\\
+\verb.!.&Called Logical NOT Operator. Use to reverses the logical state of its operand. If a condition is true, then Logical NOT operator will make false.\\
+\end{TTable}
+
+\subsection{\ntn{Bitwise Operators}}
+
+Bitwise operators work on bits and perform bit-by-bit operations. The truth tables for bitwise AND \verb.&., bitwise OR \verb.|. and bitwise exclusive OR (XOR) \verb.^. are:
+
+\begin{TTable}{*{5}{c}}
+\verb.p.&\verb.q.&\verb.p&q.&\verb.p|q.&\verb.p^q.\\
+0&0&0&0&0\\
+0&1&0&1&1\\
+1&1&1&1&0\\
+1&0&0&1&1\\
+\end{TTable}
+
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.&.&Binary AND Operator copies a bit to the result if it exists in both operands.\\
+\verb.|.&Binary OR Operator copies a bit if it exists in either operand.\\
+\verb.^.&Binary XOR Operator copies the bit if it is set in one operand but not both.\\
+\verb.~.&Binary Ones Complement Operator is unary and has the effect of 'flipping' bits.\\
+\verb.<<.&Binary Left Shift Operator. The left operands value is moved left by the number of bits specified by the right operand.\\
+\verb.>>.&Binary Right Shift Operator. The left operands value is moved right by the number of bits specified by the right operand.\\
+\end{TTable}
 
 \subsection{Assignment Operators}
 
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.=.&Simple assignment operator, Assigns values from right side operands to left side operand.\\
+\verb.+=.&Add AND assignment operator, It adds right operand to the left operand and assign the result to left operand.\\
+\verb.-=.&Subtract AND assignment operator, It subtracts right operand from the left operand and assign the result to left operand.\\
+\verb.*=.&Multiply AND assignment operator, It multiplies right operand with the left operand and assign the result to left operand.\\
+\verb./=.&Divide AND assignment operator, It divides left operand with the right operand and assign the result to left operand.\\
+\verb.%=.&Modulus AND assignment operator, It takes modulus using two operands and assign the result to left operand.\\
+\end{TTable}
+
+\subsection{\ntn{Assignment Operators}}
+
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.<<=.&Left shift AND assignment operator.\\
+\verb.>>=.&Right shift AND assignment operator.\\
+\verb.&=.&Bitwise AND assignment operator.\\
+\verb.^=.&Bitwise exclusive OR and assignment operator.\\
+\verb.|=.&Bitwise inclusive OR and assignment operator.\\
+\end{TTable}
+
 \subsection{Misc Operators}
+
+\begin{TTable}{lp{0.8\linewidth}}
+\verb.sizeof.&The sizeof operator returns the size of a variable in bytes. For example, sizeof(a), where ‘a’ is integer, and will return 4.\\
+\verb.?X:Y.&If Condition is true then it returns value of X otherwise returns value of Y.\\
+\verb.,.&The comma operator causes a sequence of operations to be performed. The value of the entire comma expression is the value of the last expression of the comma-separated list.\\
+\verb+.+&The member operator \verb,., accesses a member of the operand on the left as specified by the operator on the right.\\
+\verb.->.&The member operator \verb.->. is used to dereference the operand on the left and access one of its members indicated by the operand on the right.\\
+Casts&Casting operators convert one data type to another. For example \verb.int(2,200). would return \verb.2..\\
+\verb.&.&The address operator returns the address of a variable.\\
+\verb.*.&The dereference operator returns the value the operand points to.\\
+\end{TTable}
 
 \subsection{Operator Precedence and Associativity}
 
@@ -363,8 +800,17 @@ Thus the assignments made in line 5 are in the order of their execution: \verb+c
 \item Operators with the same precedence are evaluated based on their associativity. For left-to-right associative operators as \verb-+- and \verb+-+ the evaluation proceeds from left to right.
 \item \verb.++()., \verb.*(). and \verb+delete+ have the same precedence, and are thus evaluated based on their associativity, which is right-to-left. Therefore \verb.++(). is evaluated after \verb.*(). and \verb+delete+ is evaluated last.
 \end{enumerate}
+
+If written badly expression can result in undefined behaviour:
+
+\begin{TPCpp}
+f(++i, ++i);
+n = ++i + i;
+b = ++a - a++;
+\end{TPCpp}
 \fi
 
+\textbf{Avoid changing variables which are used again in the same expression.}
 
 \section{Loop Types}
 
