@@ -76,6 +76,20 @@ Read error messages, review basic syntax, look for the additional semicolon.
 
 Use a \easyurl{debugger}{https://www.visualstudio.com/de/thank-you-downloading-visual-studio/?sku=Community&rel=15}.
 
+Or include safeguards in your code, checking the state of variables during runtime:
+
+\begin{TPCpp}
+//#define NDEBUG  //uncomment to ignore assertions
+#include <cassert>
+
+int main(){
+	cout<<"Enter 0 or 1"<<endl;
+	int a;
+	cin>>a;
+	assert( a == 1 || a == 0 );
+}
+\end{TPCpp}
+
 \subsection{... approach problems}
 
 \begin{enumerate}
@@ -245,11 +259,276 @@ This directive is used to specify diverse options to the compiler. These options
 
 \section{Positional Notation}
 
+In short, a positional notation is defined as a method of representing or encoding numbers. It is characterized by its use of the same symbol for different orders of magnitude (for example the ``ones place'', the ``tens place'' and the ``hundreds place'' in case of the decimal system). With the inclusion of the radix point, a symbol separating the integer part of the number of the fractional part, positional notation can represent rational numbers.
+
 \subsection{Binary numbers}
 
-\subsubsection{Floating point numbers}
+A binary number is a number expressed by a base-2 numeral system which uses only two symbols, typically 0 and 1.
+
+\subsubsection{From Decimal to Binary}
+
+To find the binary representation of a decimal number repeatedly divide by two and list the remainders. The resulting sequence is the binary representation in reverse order. For comparison the same algorithm is applied to a decimal number on the left.
+
+\begin{minipage}{0.45\linewidth}
+\begin{align*}
+91310&=10*9131+&0\\
+9131&=10*913+&1\\
+913&=10*91+&3\\
+91&=10*9+&1\\
+9&=10*0+&9
+\end{align*}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+\begin{align*}
+61&=2*30+&1\\
+30&=2*15+&0\\
+15&=2*7+&1\\
+7&=2*3+&1\\
+3&=2*1+&1\\
+1&=2*0+&1
+\end{align*}
+\end{minipage}
+
+\subsubsection{From Binary to Decimal}
+
+To find the decimal representation of a binary number simply list its digits, multiply each with its place value and sum up.
+
+\begin{tabular}{llllllll}
+&&&&&&&$\sum$\\
+Ziffern&1&1&1&1&0&1\\
+Multiplikator&32&16&8&4&2&1\\
+Wert&32&16&8&4&0&1&61\\
+\end{tabular}
+
+\subsubsection{Two's complement}
+
+Two ways of interpreting signed numbers are shortly compared here in order to motivate the convention used.
+
+\begin{TTable}{lll|lll}
+\multicolumn{6}{c}{\textbf{Sign and magnitude}}\\
+Bits&Unsigned value&S \& M&Bits&Unsigned value&S \& M\\
+0000&0&0&1000&8&-0\\
+0001&1&1&1001&9&-1\\
+0010&2&2&1010&10&-2\\
+0011&3&3&1011&11&-3\\
+0100&4&4&1100&12&-4\\
+0101&5&5&1101&13&-5\\
+0110&6&6&1110&14&-6\\
+0111&7&7&1111&15&-7\\
+\end{TTable}
+
+The interpretation with sign and magnitude interprets the first bit as the sign bit. This results in a range of $-(2^{N-1}-1)$ to $2^{N-1}-1$, where N is the number of available bits.
+
+\begin{TTable}{lll|lll}
+\multicolumn{6}{c}{\textbf{Two's complement}}\\
+Bits&Unsigned value&2's&Bits&Unsigned value&2's\\
+0000&0&0&1000&8&-8\\
+0001&1&1&1001&9&-7\\
+0010&2&2&1010&10&-6\\
+0011&3&3&1011&11&-5\\
+0100&4&4&1100&12&-4\\
+0101&5&5&1101&13&-3\\
+0110&6&6&1110&14&-2\\
+0111&7&7&1111&15&-1\\
+\end{TTable}
+
+The two's complement interprets the first bit as the negative of its value in an unsigned interpretation. As seen above this allows omitting $-0$ as an encoded value and thus enlarges the range by one number: $-(2^{N-1})$ to $2^{N-1}-1$.
+
+\subsubsection{Overflow and Underflow}
+
+When calculating with numbers in a restricted range of values as on computer memory arithmetic operations can lead to over- and underflows. This is dangerous since there is no error message for such miscalculations.
+
+\paragraph{unsigned int}
+
+When an unsigned int is assigned a negative value (underflow) the resulting value can be described as follows:
+
+\mportant{$\mathbf{unsigned\ int}\ u \leftarrow x = \begin{cases} x \geq 0 & x \\ x < 0 & x + 2^B\end{cases}$}
+
+Where $2^B$ is twice the value of the most significant bit and $B$ is the number of bits. When the assigned value is in two's complement (which it is for c++) the representation does not have to be changed internally. Instead the unsigned interpretation effects the addition of $2^B$ since now the first bit of the number is not given a negative but a positive value. Note that the only case this does not happen is if the first bit is zero, which means that the assigned number was non-negative in the first place!
+
+\paragraph{int}
+
+When an int is assigned a value larger than can be saved a so called overflow happens, which means that the first bit of the number is switched and a large negative number results.
+
+\subsubsection{Estimation of the order of magnitude}
+
+\begin{align*}
+2^{10}&=1024=1Ki\approx 10^3\\
+2^{32}&=3\cdot(1024)^3= 4Gi\\
+2^{64}&=16Ei\approx 16\cdot10^{18}
+\end{align*}
+
+\subsubsection{\ntn{Orders of magnitude of data}}
+
+\begin{TTable}{lll|lll}
+\multicolumn{6}{c}{Multiple of bytes}\\
+\multicolumn{3}{c}{Decimal}&\multicolumn{3}{c}{Binary}\\
+Value&&Metric&Value&&IEC\\
+$1000$&kB&kilobyte&$1024$&KiB&kibibyte\\
+$1000^2$&MB&megabyte&$1024^2$&MiB&mebibyte\\
+$1000^3$&GB&gigabyte&$1024^3$&GiB&gibibyte\\
+$1000^4$&TB&terabyte&$1024^4$&TiB&tebibyte\\
+$1000^5$&PB&petabyte&$1024^5$&PiB&pebibyte\\
+$1000^6$&EB&exabyte&$1024^5$&EiB&exbibyte\\
+\end{TTable}
+
+\subsection{Floating point numbers}
+
+A possible representation of numbers with a fractional part is fixing the number of digits before and after the radix point. The disadvantage of such a representation lies in its limitedness. A floating point system can tremendously increase the flexibility of such a notation. It consists of a certain number of significant digits and  the position of the radix point. In other words it has a mantissa and an exponent. Note that no floating point system can fully represent $\mathbb{R}$, since the length of the mantissa is limited.
+
+\subsubsection{Description}
+
+Any floating point system can be described with a small set of parameters:
+
+\[\mathcal{F}^{(\ast)}(\underbrace{\beta}_\text{Basis $\geq$ 2},\overbrace{p}^\text{Length of mantissa$\geq$1},\underbrace{e_{min},e_{max}}_\text{smallest and largest exponent})\]
+
+Where the asterisk, when present, signalises that the represented number always start with a 1 (only works for basis 2). This first digit is called the hidden bit, since based on the above assumption, it does not need to be saved explicitly. Nevertheless it is counted as part of the mantissa. Of course this definition
+
+When saved in computer memory the available bits are assigned in the following manner. Example for $\mathcal{F}^\ast(2,6,-7,7)$.
+
+\begin{Large}
+\[{\color{red}{0}}{\color{green}{0000}}{\color{blue}{00000}}\]
+\end{Large}
+\begin{itemize}
+\item\textcolor{red}{Sign bit}
+\item\textcolor{blue}{Mantissa bits}
+\item\textcolor{green}{Exponent bits}
+\end{itemize}
+
+\begin{enumerate}
+\item All number are in normalized representation, which means that the exponent is chosen such, that there is a single 1 on the left side of the radix point.
+\item The exponent is read as an unsigned int with a bias, for this example we shift the value range by 8, such that $0000\hat{=} -8$.
+\item For making certain numbers available that are otherwise not representable the smallest exponent $0000$ is given up for encoding certain special values as shown below:
+
+\begin{center}
+$\underbrace{\textcolor{red}{0}\textcolor{green}{0000}\textcolor{blue}{00000}}_\text{Null}\qquad \underbrace{\textcolor{red}{0}\textcolor{green}{0000}\textcolor{blue}{00001}}_{+\infty}\qquad\underbrace{\textcolor{red}{0}\textcolor{green}{0000}\textcolor{blue}{00010}}_{-\infty}\qquad\underbrace{\textcolor{red}{0}\textcolor{green}{0000}\textcolor{blue}{00011}}_\text{NaN}$
+\end{center}
+\end{enumerate}
+
+\subsubsection{Smalles normalized and largest positive number}
+
+\[2^{e_{min}}\qquad\qquad\qquad\left(1-\left(\frac{1}{2}\right)^p\right)\beta^{e_{max}+1}\]
+
+\subsubsection{Decimal to binary representation}
+
+\begin{minipage}{0.45\linewidth}
+\begin{center}
+\begin{tabular}{l|l|l}
+$x$&$d_i$&$x-d_i$\\\hline
+1.934&1&0.934\\
+9.34&9&0.34\\
+3.4&3&0.4\\
+4&4&0
+\end{tabular}
+\end{center}
+\end{minipage}
+\hfill
+\begin{minipage}{0.45\linewidth}
+\begin{center}
+
+\begin{tabular}{r|l|l}
+$x$&$b_i$&$x-b_i$\\\hline
+1.9&1&0.9\\
+1.8&1&0.8\\
+\textbf{1.6}&1&0.6\\
+1.2&1&0.2\\
+0.4&0&0.8\\
+\textbf{1.6}&1&0.6\\
+&$\vdots$&
+\end{tabular}
+\end{center}
+\begin{equation*}
+1.1\overline{1100}
+\end{equation*}
+\end{minipage}
+
+\subsubsection{Binary to decimal representation}
+
+\begin{center}
+\begin{tabular}{ll|l|l|l|l|l|l|l}
+binary:&1&1&1&1&.&1&1&1\\\hline
+decimal:&8&4&2&1&&$\frac{1}{2}$&$\frac{1}{4}$&$\frac{1}{8}$
+\end{tabular}
+\end{center}
+
+\subsubsection{Guidelines when using floating point arithmetics}
+
+\begin{enumerate}
+\item Single precision: $\mathcal{F}^\ast(2,24,-126,127)$
+\item Double precision: $\mathcal{F}^\ast(2,53,-1022,1023)$
+\item Never test rounded floating point numbers for equality!
+\item Never add two floating point numbers of very different magnitude!
+\item Never subtract two numbers of comparable size!
+\end{enumerate}
 
 \subsection{Hexadecimal numbers}
+
+A hexadecimal number is a number expressed by a base-16 numeral system which uses the symbols 0-9 and A-F. For conversion between hexadecimal and decimal apply the algorithms learned for binary numbers. On preference convert to binary first, using hex nibbles.
+
+\subsubsection{Hex nibbles}
+
+Any of the hexadecimal digits can be understood as a nibble (4 bits). Therefore hexadecimal numbers can be viewed as a compact representation of binary numbers, since every hexadecimal bit directly translates to a certain nibble as listed below.
+
+\begin{TTable}{lll|lll}
+hex&bin&dec&hex&bin&dec\\
+0&0000&0&8&1000&8\\
+1&0001&1&9&1001&9\\
+2&0010&2&A&1010&10\\
+3&0011&3&B&1011&11\\
+4&0100&4&C&1100&12\\
+5&0101&5&D&1101&13\\
+6&0110&6&E&1110&14\\
+7&0111&7&F&1111&15\\
+\end{TTable}
+
+\ifnum\conditionmacro=1
+Beispiel mit 32-bit Zahlen: 0x00000000 -- 0xffffffff
+\begin{itemize}
+\item 0x80000000: höchstes Bit einer 32-bit Zahl gesetzt
+\item 0xffffffff: alle Bits einer 32-bit Zahl gesetzt
+\end{itemize}
+\fi
+
+\section{Extended Backus-Naur-Form}
+
+The Extended Backus-Naur-Form (EBNF) is a formal metalanguage used to describe context free grammars.
+
+\begin{itemize}
+\item \textbf{metalanguage:} A language about language.
+\item \textbf{context free grammar:} Rules for composing the words of a language that do not depend on the context. 
+\end{itemize}
+
+\textbf{Short and simple:} The EBNF is a language that defines with a simple syntax what sentences can be built with the words of another language. The EBNF consists of three main elements:
+
+\begin{enumerate}
+\item \textbf{Terminals:} Symbols that are the elemental basis of the language and cannot be further replaced.
+\item \textbf{Nonterminals:} Symbols that can be replaced by other symbols based on certain rules.
+\item \textbf{Derivation rules:} Rules that define which nonterminals are to be replaced by which terminals and in what manner.
+\end{enumerate}
+
+The syntax for EBNF can be summed up as follows:
+
+\begin{TTable}{ll@{$\qquad$}ll}
+Usage&Notation&Usage&Notation\\
+definition&\verb+=+&grouping&\verb+( ... )+\\
+concatentation&\verb.,.&terminal string&\verb," ... ",\\
+termination&\verb+;+&terminal string&\verb+' ... '+\\
+alternation&\verb+|+&comment&\verb+(* ... *)+\\
+optional&\verb+[ ... ]+&special sequence&\verb+? ... ?+\\
+repetition&\verb+{ ... }+&exception&\verb+-+\\
+\end{TTable}
+
+As an example we have here an EBNF defining whole numbers:
+
+\begin{TPCpp}
+digit excluding zero = "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" ;
+digit                = "0" | digit excluding zero ;
+natural number = digit excluding zero, {digit};
+whole number = "0" | [ "-" ], natural number;
+\end{TPCpp}
+
+A natural application of the EBNF is the definition of programming languages. The use of recursive functions then allows direct implementation of the defined derivation rules resulting in a parser. A parser is a program that checks whether a stream of symbols adheres to a certain grammar.
 
 \section{Syntax}
 
@@ -334,6 +613,10 @@ Valueless&void\\
 \end{TTable}
 \fi
 
+\paragraph{char}
+
+%TODO add ascii code and explanation of mapping
+
 \subsubsection{Type modifiers}
 
 \ifnum\conditionmacro=1
@@ -390,14 +673,31 @@ int main() {
 \end{TPCpp}
 \fi
 
+\subsubsection{Find minimum and maximum value of int}
+
+\begin{TPCpp}
+#include <iostream>
+#include <limits>
+using namespace std;
+
+int main() {
+   cout << "Minimum int value is "
+        << numeric_limits<int>::min() << ".\n"
+        << "Maximum int value is "
+        << numeric_limits<int>::max() << ".\n";
+   return 0;
+}
+\end{TPCpp}
+
 \subsubsection{Type qualifiers: const \ntn{volatile restrict}}
 %const volatile restrict
 
-\begin{TTable}{lp{0.7\linewidth}}
-\verb+const+&Objects of type \verb+const+ cannot be changed by the program during execution.\\
-\verb+volatile+&The modifier \verb+volatile+ tells the compile that a variable's value may be changed in ways not explicitly specified by the program. (Imagine for instance manually changing the position of a switch on a microprocessor.)\\
-\verb+restrict+&A pointer qualified by \verb+restrict+ is initially the only means by which the object it points to can be accessed.\\
-\end{TTable}
+
+\paragraph{const} Objects of type \verb+const+ cannot be changed by the program during execution.
+
+\textbf{const-correctness: Any variable that does not change its value during the course of the program is to be declared as const!}
+\paragraph{\ntn{volatile}} The modifier \verb+volatile+ tells the compile that a variable's value may be changed in ways not explicitly specified by the program. (Imagine for instance manually changing the position of a switch on a microprocessor.)
+\paragraph{\ntn{restrict}} A pointer qualified by \verb+restrict+ is initially the only means by which the object it points to can be accessed.
 
 \subsubsection{\ntn{Storage classes}}
 %auto register static extern mutable
@@ -518,6 +818,23 @@ A scope is a region of the program within which variable definitions persist. Th
 \item Outside of all functions (global parameters)
 \end{enumerate}
 
+\subsection{Blocks}
+
+A block is a group of statements enclose by curly brackets.
+
+\begin{TPCpp}
+{statement1; statement2; ... statementN;}
+\end{TPCpp}
+
+Control statements generate blocks as well:
+
+\begin{TPCpp}
+for (int i = 0; i < 10; i++){
+	cout<<i<<endl;
+}
+// cout<<i<<endl; //not possible i is out of scope
+\end{TPCpp}
+
 \subsection{Local Variables}
 
 Variables that are defined within a function or a block can only be used by statements within that same function or block.
@@ -629,18 +946,14 @@ The conversion from integer to bool results in \verb+true+ for all nonzero value
 
 Character literals are enclosed in single quotes ('). A character literal can be a plain character ('x'), an escape sequence ('\verb+\t+') or a universal character ('\verb+\u02C0+').
 
-\begin{TTable}[1]{ll}
-\verb+\\+&\verb+\\+ character\\
-\verb+\'+&' character\\
-\verb+\"+&'' character\\
-\verb+\?+&? character\\
-\verb+\a+&Alert or bell\\
-\verb+\b+&Backspace\\
-\verb+\f+&Form feed\\
-\verb+\n+&Newline\\
+\begin{TTable}[1]{ll@{$\qquad$}ll}
+\verb+\\+&\verb+\\+ character&\verb+\f+&Form feed\\
+\verb+\'+&' character&\verb+\n+&Newline\\
+\verb+\"+&'' character&
 \verb+\r+&Carriage return\\
-\verb+\t+&Horizontal tab\\
-\verb+\v+&Vertical tab\\
+\verb+\?+&? character&\verb+\t+&Horizontal tab\\
+\verb+\a+&Alert or bell&\verb+\v+&Vertical tab\\
+\verb+\b+&Backspace\\
 \end{TTable}
 
 \subsection{String Literals}
@@ -661,6 +974,20 @@ String literals are enclosed in double quotes. A string contains any combination
 \verb.--.&Decreases an integer value by one\\
 \end{TTable}
 
+\begin{itemize}
+\item Note that the \verb+/+ operator returns a value of the same type as its operators. Thus a division of two integers, known as \textbf{integer division}, returns the rounded result of the division. 
+\end{itemize}
+
+\subsubsection{Div-Mod identity}
+
+\begin{center}
+\verb.a/b * b + a%b == a.
+\end{center}
+
+\subsubsection{Pre- and post-in-/decrement}
+
+%TODO add content
+
 \subsection{Relational Operators}
 
 \begin{TTable}{lp{0.8\linewidth}}
@@ -679,6 +1006,32 @@ String literals are enclosed in double quotes. A string contains any combination
 \verb.||.&Called Logical OR Operator. If any of the two operands is non-zero, then condition becomes true.\\
 \verb.!.&Called Logical NOT Operator. Use to reverses the logical state of its operand. If a condition is true, then Logical NOT operator will make false.\\
 \end{TTable}
+
+\subsubsection{De Morgan's laws}
+
+\begin{center}
+\begin{tabular}{l}
+\verb+!(a && b) == (!a || !b)+\\
+\verb+!(a || b) == (!a && !b)+
+\end{tabular}
+\end{center}
+
+\subsubsection{Application: XOR}
+
+XOR is the exclusive or operation and different descriptions can be derived using De Morgan's laws.
+
+\begin{center}
+\begin{tabular}{ll}
+\verb+(x||y) && !(x && y)+&x or y, and not both\\
+\verb+(x||y) && (!x || !y)+&x or y, and one not\\
+\verb+!(!x && !y) && !(x && y)+& not both and not none\\
+\verb+!(!x && !y || x && y)+& not: none or both
+\end{tabular}
+\end{center}
+
+\subsubsection{Short circuit evaluation}
+
+The logical operators \verb+&&+ and \verb+||+ are left associative, thus evaluate the left operand first. If the result of the evaluation is clear after that, the right side is not evaluated at all. \textbf{Thus the simpler evaluation should always be on the left of the operator.}
 
 \subsection{\ntn{Bitwise Operators}}
 
@@ -812,62 +1165,671 @@ b = ++a - a++;
 
 \textbf{Avoid changing variables which are used again in the same expression.}
 
+\section{Conditional Statements}
+
+Conditional statements can be used to alter the flow of a program depending on set conditions.
+
+\subsection{if}
+
+The if command executes a single statement or a collection if a certain condition is evaluated as true.
+
+\begin{TPCpp}
+if (condition) single_statement;
+
+if (condition) {
+	statement1;
+	statement2;
+}
+\end{TPCpp} 
+
+\subsubsection{if...else}
+
+The if else command executes statement1 if the condition is met and statement2 otherwise.
+
+\begin{TPCpp}
+if (condition) {
+	statement1;
+}
+else {
+	statement2;
+}
+\end{TPCpp} 
+
+\subsubsection{if...else if... else}
+
+Alternatively multiple conditions can be tested. Note that they are mutually exclusive, thus only the first of the cases, that evaluates as true is executed. The else if can be repeated.
+
+\begin{TPCpp}
+if (condition1) {
+
+}
+else if (condition2) {
+
+}
+else {
+
+} 
+\end{TPCpp}
+
+\subsection{switch}
+
+The switch statement is used to execute statements depending on the value of an expression. In doing so the expression is tested for equality with an integer (or enumeration type).
+
+\begin{TPCpp}
+switch (expression) {
+	case 1 : cout << '1'; // prints "1"
+	case 2 : cout << '2'; // then prints "2"
+}
+
+switch (expression) {
+	case 1 : cout << '1'; // prints "1"
+		break;	// then exits the switch
+	case 2 : cout << '2';
+		break;
+	default : cout << "default";
+}
+\end{TPCpp}
+
+Note that the cases are only executed mutually exclusively if ended with the break command, that exits the switch statement. Otherwise, as in the first case above all consecutive cases after the first met case are executed until break or the end of the switch is encountered. The default case is executed anytime it is reached. In other words, if none of the above cases has been met or if one has been met an no break has been reached. 
+
+\subsection{? : Operator}
+
+The \verb+? :+ operator can be understood as a short form of an if else command.
+
+\begin{TPCpp}
+a>b?a:b;
+
+if(a>b) {
+	return a;
+}
+else {
+	return b;
+}
+\end{TPCpp}
+
+The code snippets above accomplish exactly the same.
+
 \section{Loop Types}
 
 \subsection{while}
 
+The while loop executes a set of statements as long as a set condition is evaluated as true.
+
+\begin{TPCpp}
+while (condition) {
+	statement;
+}
+\end{TPCpp}
+
 \subsection{for}
+
+The for loop not only tests a condition but has additional functionality which is normally used to instantiate a counter variable and increment it. The three together define the loop duration in one line.
+
+\begin{TPCpp}
+for (init-statement; condition; expression){
+	statement;
+}
+
+for (int i = 0; i < n ; i++){
+	statement;
+}
+
+for (;condition;) {
+	//equivalent to while(condition)
+}
+\end{TPCpp}
+
+Optionally any of the three parts of the loop definition can be omitted. Leaving away the condition results in an infinite loop.
 
 \subsection{do...while}
 
-\subsection{Loop Control Statements}
-%break continue goto
+The do while loop executes its first iteration independent of the subsequently tested condition.
 
-\section{Conditional Statements}
+\begin{TPCpp}
+do {
+	statement
+} while(condition);
+\end{TPCpp}
 
-\subsection{if}
+\subsection{break continue}
 
-\subsection{if...else}
+In all of the loops above the loop control statements can be used to escape the loop (\verb+break+) to continue with the next iteration (\verb+continue+).
 
-\subsection{switch}
-
-\subsection{? : Operator}
+\begin{TPCpp}
+while(true){
+	if(condition){
+		continue;
+	}
+	if(condition2){
+		break;	
+	}
+}
+\end{TPCpp}
 
 \section{Functions}
 
 \subsection{Structure}
 
+\begin{TPCpp}
+return_type function_name (parameter list) {
+	body of the function
+}
+\end{TPCpp}
+
+\begin{itemize}
+\item \textbf{Return type: } A function may return a value. The \verb+return_type+ is the data type of that value. If the function should not return a value its \verb+return_type+ is set to \verb+void+.
+\item \textbf{Function Name:} The function name can be any valid cpp identifier and will be used, together with the parameter list to call the function. Together, name and parameter list are called the function signature, which is unique for every function. \textbf{All non-void functions require a return statement!}
+\item \textbf{Parameters:} The parameter variables are place-holders for the values that are passed to the function when it is called. On definition parameters must have type and name. Multiple parameters are separated with a comma. A function may have no parameters in which case a empty set of brackets is appended to the function name.
+\item \textbf{Function Body:} The function body contains a set of statements that define what the function actually does.
+\end{itemize}
+
+\subsubsection{void}
+
+\begin{itemize}
+\item \verb+void+ is a fundamental type that has an empty range of values.
+\item When used as a function return type void implies that the function does not return a value.
+\item void functions do not need a return statement.
+\item void functions end when encountering the end of the function body or when reaching the optional \verb+return;+
+\end{itemize}
+
 \subsection{Declaration and Definition}
+
+A function declaration informs the compiler that there is a function with a certain signature. The declaration consists of return type, function name and parameter list, which can omit the parameter names if not directly follow by the definition.
+
+\begin{TPCpp}
+return_type function_name ( parameter list );
+
+//for example
+int max (int, int);
+\end{TPCpp}
+
+From that point on the function can be called within the code as long as it is followed by a proper definition at some point. The definition can follow the declaration directly:
+
+\begin{TPCpp}
+int min (int a, int b){
+	return a<b?a:b;
+}
+\end{TPCpp}
+
+Or come at some later point. Here we define the previously declared max function:
+
+\begin{TPCpp}
+int max (int a, int b){
+	return a>b?a:b;
+}
+\end{TPCpp}
+
+\subsubsection{return statement}
+
+The return statement concludes any function. When it is reached the function ends immediately, passing the returned value to the program calling it initially. The value given to the return statement has to match the return type defined in the declaration of the function.
 
 \subsection{Calling a function}
 
+A function is called by directly following the signature in the function declaration. For example the above defined max function can be called as follows:
+
+\begin{TPCpp}
+int c = 2, d = 3;
+
+cout<<"The maximum is "<<max(c,d)<<endl; 
+\end{TPCpp}
+
+Upon this call the values c and d that are passed to the function initialize the two parameters a and b in the body of the function.
+
 \subsection{Function Arguments}
+
+Depending on the way the parameters are passed to the function it behaves fundamentally different.
 
 \subsubsection{Call by Value}
 
-\subsubsection{Call by Reference}
-%and by pointer - both in same category?
+A call by value copies the values handed to the function into the parameters of the function. Therefore changes made to the parameters inside the function do not have an effect on the argument.
 
-\subsubsection{Default Values for Parameters}
+\begin{TPCpp}
+void change(int a){
+	a = 4;
+}
+\end{TPCpp}
+
+\subsubsection{Call by Reference}
+
+A call by reference makes the parameter a reference of the argument. Thus all changes made inside the function have the same effect on the argument.
+
+\begin{TPCpp}
+void change_ref(int & a){
+	a = 4;
+}
+\end{TPCpp}
+
+When calling the function there is no visible difference to a call by value:
+
+\begin{TPCpp}
+int main(){
+	int b = 3;
+	change(b); //no effect
+	change_ref(b); //b = 4;
+}
+\end{TPCpp}
+
+\subsubsection{Return by Reference}
+
+A function can also return a reference. This however is only possible if the function has been called by reference in the first place. \textbf{Use call by read-only references instead of call by value for large data types to save effort.}
+
+\begin{TPCpp}
+int & increment (int & i){
+	i = i + 1;
+	//pass reference to variable that exists outside
+	return i;
+}
+\end{TPCpp}
+
+When trying to pass a reference to a local variable there will be a runtime error.
+
+\begin{TPCpp}
+int & increment (int no_reference){
+	no_reference = no_reference + 1;
+	//pass reference to local variable that 
+	//will not persist beyond the function scope
+	return no_reference;
+}
+\end{TPCpp}
+
+The motivation to return by reference lies in the idea of processing the return value of a function further, possibly with another function that has to be called by reference. A good example is a concatenation of assignments.
+
+\subsubsection{Call by Pointer}
+
+A call by pointer makes the parameter a copy of the address of the argument. Equivalent to a call by reference the changes on the argument persist. Contrasting to it, the parameter has to be dereferenced since it is a pointer.
+
+\begin{TPCpp}
+void change_poi(int * a){
+	*a = 4;
+}
+\end{TPCpp}
+
+When calling the function there is a difference to a call by value, the function must be handed an address!
+
+\begin{TPCpp}
+int main(){
+	int b = 3;
+	change(b); // no effect
+	change_poi(&b); // b = 4;
+}
+\end{TPCpp}
+
+\subsubsection{Return by Pointer}
+
+In contrast to a return by reference, a return by pointer is not restricted to functions that were called by a variable that exists outside the function scope. It is possible to allocate new memory and return a pointer to that memory.
+
+\begin{TPCpp}
+int * make_new_array (int Length){
+	int * array_pointer;
+	array_pointer = new int [Length];
+	return array_pointer;
+}
+\end{TPCpp}
+
+\subsubsection{\ntn{Default Values for Parameters}}
+
+It is possible to define default values for function parameters. Those will be used when the corresponding argument is left blank when calling the function.
+
+\begin{TPCpp}
+void count_to_ten_or_more (int n = 10){
+	for (int i = 0; i<n; i++){
+		cout<<i+1<<" ";
+	}
+	cout<<endl;
+}
+\end{TPCpp}
+
+With the default value set, the function above can be called as \verb+count_to_ten_or_more();+ which will result in a count to ten, or it can be given any argument of choice.
 
 \subsection{Recursion}
 
-\subsection{Inline Functions}
+It is possible to define function that call themselves:
+
+\begin{TPCpp}
+void f(){
+	f(); //function calls itself endlessly
+}
+\end{TPCpp}
+
+In order to make the call above work we need \textbf{progress}, i.e. each function call needs to accomplish a step in the correct \textbf{direction}, i.e. the recursion has to head towards a certain goal, a \textbf{termination}. These are the three essential components of a reasonable recursion.
+
+\begin{TPCpp}
+//POST: return value n!
+
+unsigned int fac (unsigned int n)
+{
+	//termination condition
+	if (n <= 1) return 1;
+	
+	//recursion with direction n->1
+	return n * fac(n-1);
+}
+\end{TPCpp}
+
+\begin{itemize}
+\item Advantages:
+\begin{itemize}
+\item Simple solution of complex problems
+\item Easily understandable code
+\end{itemize}
+\item Disadvantages:
+\begin{itemize}
+\item Stack overflow possible
+\item Slower
+\item More difficult debugging
+\end{itemize}
+\end{itemize}
+
+\subsubsection{Call stack}
+
+Recursive functions establish a whole stack of recursive calls until all ends are terminated. This stack can be nicely visualized:
+
+\begin{TPCpp}
+//POST: return value is the n-th
+//Fibonacci number F(n)
+unsigned int fib(const unsigned int n){
+	if (n == 0) return 0;
+	if (n == 1) return 1;
+	return fib(n-1) + fib(n-2); //n>1
+}
+\end{TPCpp}
+
+\begin{center}
+\begin{tikzpicture}[level distance=10mm]
+	\tikzstyle{every node}=[fill=white,draw=black,rectangle,inner sep=4pt]
+	\tikzstyle{every child}=[fill=white,draw=black,rectangle,inner sep=4pt]
+	\tikzstyle{level 1}=[set style ={{every child}+=[sibling distance=40mm]}]
+	\tikzstyle{level 2}=[set style ={{every child}+=[sibling distance=20mm]}]
+	\node{f(4)}
+		child {node {f(3)}
+				child{node {f(2)}
+					child{node[fill=blue!20]{f(1)}}
+					child{node[fill=blue!20]{f(0)}}
+				}
+				child{node[fill=blue!20] {f(1)}}
+			}
+		child{node {f(2)}
+			child{node[fill=blue!20]{f(1)}} 
+			child{node [fill=blue!20]{f(0)}}
+			};		
+\end{tikzpicture}
+\end{center}
+
+An iterative formulation of the above algorithm can also be established and nicely shows the advantage of its recursive brother:
+
+\begin{TPCpp}
+// POST: return value is the n-th Fibonacci number F(n)
+unsigned int fib2 (const unsigned int n) {
+if (n == 0) return 0;
+if (n <= 2) return 1;
+unsigned int a = 1; // F_1
+unsigned int b = 1; // F_2
+for (unsigned int i = 3; i <= n; ++i) {
+unsigned int a_prev = a; // F_i-2
+a = b; // F_i-1
+b += a_prev; // F_i-1 += F_i-2 -> F_i
+}
+return b;
+}
+\end{TPCpp}
+
+\subsection{\ntn{Inline Functions}}
 
 \section{Arrays}
 
+Arrays are used to save a previously known number of data points of the same type.
+
+\begin{TPCpp}
+int list_1 [4]; // [r1 r2 r3 r4]
+int list_2 [ ] = {1,2,3,4}; // [1 2 3 4]
+int list_3 [4] = {1}; // [1 0 0 0]
+list_1 [0] = 1;
+//list_1 [4] = 5; // segmentation fault
+\end{TPCpp}
+
+\begin{itemize}
+\item Arrays are declared with type, name and the length in square brackets. Uninitialized arrays contain random values. (\verb+list_1+)
+\item Arrays with undefined length need to be initialized directly such that the length can be determined. (\verb+list_2+)
+\item Arrays with a short initialization will fill up with zeros. (\verb+list_3+)
+\item Array indexing starts with 0.
+\item Accessing out-of-bound values results in undefined behaviour.
+\end{itemize}
+
+\subsection{Arrays and Pointers}
+
+The name of an array can be understood as a pointer to the first element of the array.
+
+\begin{TPCpp}
+int list_1 [4] = {1,2,3,4};
+int list_2 [1];
+// list_1 = list_2; // error
+int * list_pointer_1 = list_1;
+int * list_pointer_2 = &list_1[0];
+list_1[1]; // value: 2
+list_pointer_1[1]; //value: 2
+list_pointer_2[1]; //value: 2
+*(list_1 + 1); //value: 2
+\end{TPCpp}
+
+\begin{itemize}
+\item The name of an array is a pointer that is not allowed to be changed.
+\item A pointer to the name of an array is equivalent with a pointer to the address of the first element of the same array.
+\item The access operator \verb+[]+ works on the array name as well as on a pointer on the array.
+\item The access operator is equivalent with the increment and subsequent dereferencing of a pointer to the array.
+\end{itemize}
+
+Based on the knowledge that arrays are saved with a pointer to the first element of the allocated memory dynamic arrays can be created:
+
+\begin{TPCpp}
+int n;
+cin >> n;
+int * dynamic_array = new int [n];
+\end{TPCpp}
+
+\begin{itemize}
+\item The dynamically allocated array can now be used exactly the same as a static array.
+\item The dynamic array needs to be deleted with \verb+delete [] dynamic_array+ in order not to create memory leaks!
+\end{itemize}
+
+\subsection{Multidimensional Arrays}
+
+Arrays can have more than one dimension, and can thus also be used to represent matrices or tables. 
+
+\begin{TPCpp}
+//2 elements, each an array of length 3
+//uninitialized
+int a_1[2][3];
+//initialized, size specified
+int a[2][3] = {
+	{1,2,3},{2,6,3}
+};
+//initialized, size partially specified
+int a[][3] = {
+	{1,3,4},{2,3,4},{13 3 2}
+};
+\end{TPCpp}
+
+As described in the last example it is possible to leave the first dimension unspecified if a direct initialization follows. Exactly as for simple arrays the length is determined automatically. This however does not work for the second dimension.
+The array above is saved in the memory as seen below:
+
+\includegraphics[width=\linewidth]{Pictures/2DArray}
+
+\subsection{Passing arrays as arguments}
+
+Since we know that arrays are basically pointers to memory it is possible to pass an array to the function by simple giving it a pointer to the first element of the array. Using references however we can prevent the decaying of the array-name (which remembers the length of the array if defined statically) by passing a reference to the array name as follows:
+
+\begin{TPCpp}
+void some_array_function(int pointer []){
+	//...
+}
+
+void nice_array_function(int (&arrayname) [10]{
+	//...
+}
+\end{TPCpp}
+
+The first function will accept any pointer and will not preserve the knowledge of the length of the array. The second function is able to determine whether the argument is actually an array of the specified length and will preserve this information, but has the drawback that it only works for that specific length.
+
 \section{vector}
+
+The vector class is a member of the standard library and improves on many of the issues observed with arrays. Vectors are implemented as a template and thus need a type specification in angled brackets.
+
+\begin{TPCpp}
+#include <vector>
+
+std::vector<int> int_vector;
+\end{TPCpp}
+
+The basic functionality of vector can be seen here, \easyurl{read}{http://www.cplusplus.com/reference/vector/vector/} for more details.
+
+\begin{TPCpp}
+//create a bool vector with length 100
+//all entries set to false
+std::vector<bool> status(100,false);
+
+//create a copy of an existing vector
+std::vector<bool> copy(status);
+
+//access entries
+copy[0]; // first entry
+copy.at(0); // first entry
+copy.push_back(true); // append entry: true
+copy.pop_back(); //delete last element
+\end{TPCpp}
+
+\subsection{Multidimensional vectors}
+
+Multidimensional vectors are similar to multidimensional arrays in functionality. The declaration is a bit more complicated:
+
+\begin{TPCpp}
+using namespace std;
+vector < vector < int > > a (n, vector<int>(m));
+\end{TPCpp}
+
+The above declaration describes a vector of int vectors. The initialization defines the dimensions as follows: The outer vector is of length n and contains vectors of lengths m.
+
+\subsection{Access}
+
+There exist different methods of accessing the elements of vectors.
+
+\begin{enumerate}
+\item \textbf{Random access:} The concept of random access allows accessing any element of a vector with the same effort.
+
+\begin{TPCpp}
+//long array (syntax simplified!)
+int a [] = {1,2,3,4,5,6,...,100};
+
+//random access:
+a[33]; // identical to: *(a+33);
+\end{TPCpp}
+
+The random access operation as described above requires a single addition and an implicit multiplication automatically made through pointer arithmetic when adding a number to a pointer.
+
+This access method is really flexible but also costly.
+\item \textbf{Sequential access:} This is where sequential access shines, which only requires a simple addition for getting to the next element in an array, but is less flexible since it can only go back an forth in steps of one. Sequential access can be implemented as follows:
+
+\begin{TPCpp}
+int a[5] = {1,2,3,4,5};
+for (int* p = a; p < a+5; ++P)
+	cout<<*p<<" ";
+	
+//For vectors iterators can be used
+
+\end{TPCpp}
+\end{enumerate}
+
+\subsection{Iterators}
+
+Since vectors allocate memory differently than arrays they cannot simply be traversed using a pointer. For that reason and to have an interface for advanced functionality vectors have iterators pointing to their elements.
+
+\begin{TPCpp}
+std::vector<int>::const_iterator
+
+std::vector<int>::iterator
+\end{TPCpp}
+
+The first version can be used for non-mutating access. It is analogue to a \verb+const int*+ for arrays. The second version allows changing of the elements it points to. 
+
+\begin{TPCpp}
+std::vector<int> vec;
+vec.push_back(1);
+vec.push_back(2);
+std::vector<int>::iterator it = vec.begin();
+
+while(it<vec.end()) {
+	cout<<*it<<endl;
+	it++;
+}
+\end{TPCpp}
+
+In the above example the member functions \verb+begin()+ and \verb+end()+ are used to initialize and constrain an iterator going through the vector. Access to pointed-to elements and increment of the iterator works just like it does using pointers.
+
+\subsection{Passing vectors to functions}
+
+By convention of the standard library vectors are passed to functions using two iterators, one to the beginning of a valid part of the vector to be passed and  a second to the ending of the same. This can of course include the whole vector but includes the flexibility of only processing a part of it.
+
+\begin{TPCpp}
+std::vector<double> d(100,0);
+std::fill(d.begin(),d.end(),1);
+\end{TPCpp}
 
 \section{Strings}
 
-\subsection{C-Style Character String}
+\subsection{C-style character string}
+
+One possibility to save a string is using an array of chars. By convention character arrays are terminated with \verb+\0+. This serves the purpose of marking the end of a string.
+
+\begin{TPCpp}
+//initialisation with string literal
+char text = "bool";
+//equivalent to:
+char text = {'b','o','o','l','\0'};
+\end{TPCpp}
 
 \subsection{string}
+
+The modern alternative to char arrays is the \easyurl{string class}{http://www.cplusplus.com/reference/string/string/} in the standard library. It serves the same purpose as the character array but makes handling strings a lot easier. For instance the length of a string does not have to be known at compiletime and can thus also change during runtime.
+
+\begin{TPCpp}
+#include <string>
+std::string text1 = "bool";
+text1.length(); //A string knows its length
+//initialize with variable length n
+//and fill with 'a'
+std:string text2 (n, 'a');
+//string understands comparisons
+//and many other operations
+text1 == text2; 
+\end{TPCpp}
 
 \section{Pointers}
 
 \section{References}
 
+A reference is another name for an already existing variable. It has to be initialized when declared and cannot refer to another variable afterwards. \textbf{The object referred to has to exist at least as long as its reference!}
+
+\begin{TPCpp}
+int i = 1;
+int & ref_to_i = i;
+// int & ref_to_nothing; //not allowed!
+\end{TPCpp}
+
+In c++ a reference declaration consists of the type which is to referred to, the \verb+&+ operator and the name of the reference, followed by an assignment of a valid L-value. After initialisation \verb+ref_to_i+ can be used exactly the same as \verb+i+!
+
+\begin{TPCpp}
+//int & h = 3; // not allowed!
+const int & i = 7;
+\end{TPCpp}
+
+Only \verb+const+ references are allowed to point to R-values!
+
+\begin{TPCpp}
+const int n = 5;
+// int & i = n; // not allowed
+const int & i = n; // allowed, read only
+\end{TPCpp}
+
+Only \verb+const+ references can refer to constant variables.
 \section{Input/Output}
 
 \section{struct}
@@ -907,8 +1869,6 @@ b = ++a - a++;
 \section{Namespaces}
 
 \section{Templates}
-
-\section{Preprocessor}
 
 \section{Signal Handling}
 
