@@ -258,6 +258,7 @@ This directive is used to specify diverse options to the compiler. These options
 \end{TTable}
 
 \section{Positional Notation}
+\label{sec:PositionalNotation}
 
 In short, a positional notation is defined as a method of representing or encoding numbers. It is characterized by its use of the same symbol for different orders of magnitude (for example the ``ones place'', the ``tens place'' and the ``hundreds place'' in case of the decimal system). With the inclusion of the radix point, a symbol separating the integer part of the number of the fractional part, positional notation can represent rational numbers.
 
@@ -374,6 +375,7 @@ $1000^6$&EB&exabyte&$1024^5$&EiB&exbibyte\\
 \end{TTable}
 
 \subsection{Floating point numbers}
+\label{sec:FloatingPointNumbers}
 
 A possible representation of numbers with a fractional part is fixing the number of digits before and after the radix point. The disadvantage of such a representation lies in its limitedness. A floating point system can tremendously increase the flexibility of such a notation. It consists of a certain number of significant digits and  the position of the radix point. In other words it has a mantissa and an exponent. Note that no floating point system can fully represent $\mathbb{R}$, since the length of the mantissa is limited.
 
@@ -406,7 +408,7 @@ $\underbrace{\textcolor{red}{0}\textcolor{green}{0000}\textcolor{blue}{00000}}_\
 \end{center}
 \end{enumerate}
 
-\subsubsection{Smalles normalized and largest positive number}
+\subsubsection{Smallest normalized and largest positive number}
 
 \[2^{e_{min}}\qquad\qquad\qquad\left(1-\left(\frac{1}{2}\right)^p\right)\beta^{e_{max}+1}\]
 
@@ -530,6 +532,31 @@ whole number = "0" | [ "-" ], natural number;
 
 A natural application of the EBNF is the definition of programming languages. The use of recursive functions then allows direct implementation of the defined derivation rules resulting in a parser. A parser is a program that checks whether a stream of symbols adheres to a certain grammar.
 
+\section{Character encoding}
+\label{sec:CharacterEncoding}
+
+\verb+char+ represents printable characters and small set of control characters. Formally \verb+char+ is an integer type, mostly 8 bit large, encoded in ASCII code.
+
+\subsection{ASCII}
+
+\easyurl{ASCII}{http://www.cplusplus.com/doc/ascii/} coded uses the last 7 bits of char to encode most of the symbols used when typing text. The first bit has a \easyurl{special role}{https://en.wikipedia.org/wiki/UTF-8}.
+
+\includegraphics[width=\linewidth]{Pictures/ASCII}
+
+Practically the alphabet is stored in such a way that the last 5 binary digits indicate the position of the letter in the alphabet as seen in the figure below:
+
+\begin{center}
+\begin{align*}
+(65)&-&10\ 00001&=&'A'\\
+(66)&-&10\ 00010&=&'B'\\
+&&\vdots&&\\
+(97)&-&11\ 00001&=&'a'\\
+(98)&-&11\ 00010&=&'b'
+\end{align*}
+\end{center}
+
+
+
 \section{Syntax}
 
 \subsection{Basic program}
@@ -613,9 +640,54 @@ Valueless&void\\
 \end{TTable}
 \fi
 
+\paragraph{bool}
+
+\verb+bool+ is used to save logical values. Check out section \ref{sec:LogicalOperators}.
+
 \paragraph{char}
 
-%TODO add ascii code and explanation of mapping
+\verb+char+ is used to represent characters and relies on encoding in ASCII. See section \ref{sec:CharacterEncoding} for more detail.
+
+\paragraph{int}
+
+\verb+int+ is used to save integer numbers. For clarification check out section \ref{sec:PositionalNotation}.
+
+\paragraph{float \& double}
+
+\verb+float+ and \verb+double+ are used to save floating point numbers. For clarification check out section \ref{sec:FloatingPointNumbers}.
+
+\paragraph{\ntn{void}}
+
+The void data type cannot be used as a variable since it does not allocate any memory. However there exist a number of uses:
+
+\begin{enumerate}
+\item \textbf{Function return type:} A function with return type void does not return a value and does not need to have a return statement.
+
+\begin{TPCpp}
+void print(int a){
+	std::cout<<a<<std::endl;
+}
+\end{TPCpp}
+
+\item \textbf{Function parameter list:} A function with a \verb+void+ parameter list does not take any arguments.
+
+\begin{TPCpp}
+void print(void){
+	std::cout<<"I'm pretty lame."<<std::endl;
+}
+\end{TPCpp}
+
+\item \textbf{Declaration of universal pointers:} When used in the declaration of a pointer, void specifies that this pointer is universal, which means that it can point to any other type of data which is not declared with \verb+const+ or \verb+volatile+. A void pointer cannot be dereferenced unless it is cast to another specific type.
+
+\begin{TPCpp}
+void * universal_pointer;
+int i = 3;
+universal_pointer = &i;
+//cast to pointer of type int
+int * int_pointer = (int *)universal_pointer;
+\end{TPCpp}
+
+\end{enumerate}
 
 \subsubsection{Type modifiers}
 
@@ -986,7 +1058,38 @@ String literals are enclosed in double quotes. A string contains any combination
 
 \subsubsection{Pre- and post-in-/decrement}
 
-%TODO add content
+The operators used for increment and decrement each have two tasks. The can be prefixed and postfixed and depending on this order have different effects. We will explore those effects considering the increment:
+
+\begin{itemize}
+\item \textbf{Pre-increment}: Increase the value of the argument and return a reference to the increased variable.
+\item \textbf{Post-increment}: Increse the value of the argument and return the previous value.
+\end{itemize}
+
+The signatures of those two functions are as follows:
+
+\begin{TPCpp}
+//pre-increment outside class declaration
+T & operator++(T& a);
+//post-increment outside class declaration
+T operator++(T& a, int);
+\end{TPCpp}
+
+From the signatures the difference in implementation that allows distinction between the two overloads becomes visible: The post-increment has a dummy parameter of type int. The selection of the overload happens in the background depending on the order of the call, no dummy parameter has to be handed over. Two possible implementations, making for the expected post condition and fitting the declarations above could be the following:
+
+\begin{TPCpp}
+//pre-increment: return by reference
+int& operator++(int& a){
+	a = a + 1;
+	return a;
+}
+
+//post-increment: return by value
+int operator++(int& a, int i){
+	int temp = a;
+	a = a + 1;
+	return temp;
+}
+\end{TPCpp}
 
 \subsection{Relational Operators}
 
@@ -1000,6 +1103,7 @@ String literals are enclosed in double quotes. A string contains any combination
 \end{TTable}
 
 \subsection{Logical Operators}
+\label{sec:LogicalOperators}
 
 \begin{TTable}{lp{0.8\linewidth}}
 \verb.&&.&Called Logical AND operator. If both the operands are non-zero, then condition becomes true.\\
@@ -1390,6 +1494,7 @@ void change(int a){
 \end{TPCpp}
 
 \subsubsection{Call by Reference}
+\label{sec:CallByReference}
 
 A call by reference makes the parameter a reference of the argument. Thus all changes made inside the function have the same effect on the argument.
 
@@ -1406,6 +1511,22 @@ int main(){
 	int b = 3;
 	change(b); //no effect
 	change_ref(b); //b = 4;
+}
+\end{TPCpp}
+
+Note that a call by reference can also be implemented using pointers:
+
+\begin{TPCpp}
+void change_poi(int * a){
+	*a = 4;
+}
+\end{TPCpp}
+
+\begin{TPCpp}
+int main(){
+	int b = 3;
+	change(b); // no effect
+	change_poi(&b); // b = 4;
 }
 \end{TPCpp}
 
@@ -1434,29 +1555,9 @@ int & increment (int no_reference){
 
 The motivation to return by reference lies in the idea of processing the return value of a function further, possibly with another function that has to be called by reference. A good example is a concatenation of assignments.
 
-\subsubsection{Call by Pointer}
+\vspace{3ex}
 
-A call by pointer makes the parameter a copy of the address of the argument. Equivalent to a call by reference the changes on the argument persist. Contrasting to it, the parameter has to be dereferenced since it is a pointer.
-
-\begin{TPCpp}
-void change_poi(int * a){
-	*a = 4;
-}
-\end{TPCpp}
-
-When calling the function there is a difference to a call by value, the function must be handed an address!
-
-\begin{TPCpp}
-int main(){
-	int b = 3;
-	change(b); // no effect
-	change_poi(&b); // b = 4;
-}
-\end{TPCpp}
-
-\subsubsection{Return by Pointer}
-
-In contrast to a return by reference, a return by pointer is not restricted to functions that were called by a variable that exists outside the function scope. It is possible to allocate new memory and return a pointer to that memory.
+In contrast to a return by reference, using references, when using pointers we are not restricted to functions that were called by a variable that exists outside the function scope. It is possible to allocate new memory and return a pointer to that memory.
 
 \begin{TPCpp}
 int * make_new_array (int Length){
@@ -1573,8 +1674,6 @@ return b;
 }
 \end{TPCpp}
 
-\subsection{\ntn{Inline Functions}}
-
 \section{Arrays}
 
 Arrays are used to save a previously known number of data points of the same type.
@@ -1596,6 +1695,7 @@ list_1 [0] = 1;
 \end{itemize}
 
 \subsection{Arrays and Pointers}
+\label{sec:ArraysAndPointers}
 
 The name of an array can be understood as a pointer to the first element of the array.
 
@@ -1804,6 +1904,121 @@ text1 == text2;
 
 \section{Pointers}
 
+Pointers are variables saving addresses of other variables.
+
+\begin{TPCpp}
+int a = 6;
+//b is a pointer to an int
+//and takes the address of a
+int * b = &a;
+
+(*b)++; //a == 7
+\end{TPCpp}
+
+There are three important operators for pointers:
+
+\begin{itemize}
+\item Declaration of a pointer: 
+
+\begin{TPCpp}
+//<type> * <name>;
+int * pointer;
+\end{TPCpp}
+
+\item Adress of a variable:
+
+\begin{TPCpp}
+//& <variable>;
+
+int var;
+pointer = & var;
+\end{TPCpp}
+
+\item Accessing the value pointed to (dereferencing)
+
+\begin{TPCpp}
+//want to set var = 7;
+//*<initialised_pointer>;
+*pointer = 7; //var == 7
+\end{TPCpp}
+\end{itemize}
+
+\subsection{Pointer arithmetic}
+
+In connection with arrays there are more operations possible:
+
+\begin{TPCpp}
+int my_array [10];
+//Pointer to first element
+int my_pointer = my_array;
+
+while(my_pointer<my_array+10){
+	//do something
+	//increment pointer
+	my_pointer++;
+}
+\end{TPCpp}
+
+As seen in the example above it is possible to do calculations with pointers. This works since the arithmetic operators (\verb.+,-,++,--.) are overloaded to work with pointers. Also relational operators (\verb.<,>,<=,>=,==,!=.) can be directly used.
+
+What happens internally is that the length of the data element pointed to is known by the type of the pointer and thus an increment leads to the desired change in the saved address, such that \verb+my_pointer+ points to one element in the array after the other.
+
+\subsection{Const Pointers}
+\label{sec:ConstPointers}
+
+\begin{itemize}
+\item A const pointer cannot point to another variable once initialized.
+\item A pointer to a const variable cannot change the variable it points to.
+\item A nonconst pointer cannot point to a const variable.
+\end{itemize}
+
+\textbf{Read from right to left! Read * as  'Pointer to'.}
+
+\vspace{3ex}
+
+\begin{minipage}[t]{0.4\linewidth}
+\begin{itemize}
+\item \texttt{\textcolor{blue}{int} \textcolor{violet}{*} \textcolor{orange}{iptr} = \&i;}
+
+\textcolor{orange}{iptr:} \textcolor{violet}{Pointer auf} \textcolor{blue}{int}.
+\item \texttt{\textcolor{blue}{const int}\textcolor{violet}{ *} \textcolor{orange}{icptr} = \&i;}
+
+\textcolor{orange}{icptr:} \textcolor{violet}{Pointer auf} \textcolor{blue}{const int}.
+\item \texttt{\textcolor{blue}{int const} \textcolor{violet}{*} \textcolor{orange}{ic2ptr} = \&i;}
+
+\textcolor{orange}{icptr2}: \textcolor{violet}{Pointer auf} \textcolor{blue}{const int}.
+\end{itemize}
+\end{minipage}
+\hfill
+\begin{minipage}[t]{0.5\linewidth}
+\begin{itemize}
+\item \texttt{\textcolor{blue}{int} \textcolor{violet}{*} \textcolor{red}{const} \textcolor{orange}{iptrc} = \&i;}
+
+\textcolor{orange}{iptrc:} \textcolor{red}{const} \textcolor{violet}{Pointer auf} \textcolor{blue}{int}.
+\item \texttt{\textcolor{blue}{const int} \textcolor{violet}{*} \textcolor{red}{const} \textcolor{orange}{icptrc} = \&i;}
+
+\textcolor{orange}{icptrc:} \textcolor{red}{const} \textcolor{violet}{Pointer auf} \textcolor{blue}{const int}.
+\end{itemize}
+\end{minipage}
+
+
+\subsection{Additional Information}
+
+Also see section  \ref{sec:ArraysAndPointers} for the connection between pointers and arrays as well as \ref{sec:CallByReference} to see how pointers can be used to implement call by reference.
+
+Also consider the additional \easyurl{information}{https://www.tutorialspoint.com/cplusplus/cpp_pointers.htm} explaining many advanced uses of pointers.
+
+\subsection{Differences between Pointers and References}
+
+\begin{itemize}
+\item A pointer can change where it points to.
+\item A pointer can be uninitialized, thus point to \verb+NULL+.
+\item A pointer has an address itself.
+\item There is no such thing as reference arithmetic.
+\end{itemize}
+
+\textbf{A reference can be understood as a constant pointer that does not need to be dereferenced.}
+
 \section{References}
 
 A reference is another name for an already existing variable. It has to be initialized when declared and cannot refer to another variable afterwards. \textbf{The object referred to has to exist at least as long as its reference!}
@@ -1830,63 +2045,655 @@ const int & i = n; // allowed, read only
 \end{TPCpp}
 
 Only \verb+const+ references can refer to constant variables.
+
 \section{Input/Output}
+
+C++ I/O occurs in streams, which are sequences of bytes. When bytes flow from a device like a keyboard, a disk drive or a file to main memory this is called an input operation. If bytes flow the other direction, which means from the program to a device like a display screen or a file this is called an output operation.
+
+The most important libraries for basic IO are:
+
+\begin{itemize}
+\item \verb+<iostream>+
+
+This file defines \verb+cin, cout, cerr+ and \verb+clog+, which correspond to the standard input, output, unbuffered error and buffered standard error stream.
+
+\item \verb+fstream+
+
+This file declares services for user-controlled file processing.
+\end{itemize}
+
+\subsection{cout and cin}
+
+\begin{TPCpp}
+#include <iostream>
+
+//allows omitting std:: before cout and cin
+using namespace std;
+
+int main(){
+	//declare variable
+	int a;
+	//initialise via keyboard input
+	cin>>a;
+	//print via console
+	cout<<a;
+}
+\end{TPCpp}
+
+These two streams can also be handed to functions which further allows overloading of \verb+<<+ and \verb+>>+, such that for example more elaborate classes can be handed to \verb+cout+ directly. In the example below a suitable overload for a class implementing rational numbers is made:
+
+\begin{TPCpp}
+//Stream operators
+//PRE: Takes a ostream as an argument
+//POST: Prints to the handed ostream
+std::ostream& operator<<(std::ostream& os, const Rational & rational)
+{
+    os << rational.numerator << "/" << rational.denominator;
+    return os;
+}
+\end{TPCpp}
+
+It is important to notice that the standard input stream and the standard output stream are unique objects that cannot be copied! For that reason when handed to an operator as seen above they are handed as references!
+
+\subsection{ifstream and ofstream}
+
+These two streams allow reading from a file (\verb+ifstream+) and writing to a file (\verb+ofstream+).
+
+In the subsequent subsections we will build up all the code needed for the above described operations. All snippets contribute to the same program and can be run as a whole.
+
+\subsubsection{opening a file}
+
+First we open a file in the desired mode using the \verb+fstream+ member \verb+open()+ Selectable file modes are:
+
+\begin{itemize}
+\item \verb+ios::app+
+
+Append mode. All output to that file to be appended to the end.
+\item \verb+ios::ate+
+
+Open a file for output and move the read/write control to the end of the file.
+\item \verb+ios::in+
+
+Open a file for reading.
+\item \verb+ios::out+
+
+Open a file for writing.
+\item \verb+ios::trunc+
+
+If the file already exists, its contents will be truncated before opening the file.
+\end{itemize}
+
+\begin{TPCpp}
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+int main(){
+	//declare an instance of ifstream
+	ifstream infile;
+	//open a file
+	infile.open("file_name.txt", ios::in);
+\end{TPCpp}
+
+\subsubsection{Reading from a file}
+
+After having set up the ifstream we can use it just like \verb+cin+ to read information from the file to main memory:
+
+\begin{TPCpp}
+	char in;
+	string whole_file;
+	//extract from file until
+	//end of file is reached
+	while(!infile.eof()){
+		//read next char
+		infile>>in;
+		//save char in string
+		whole_file.push_back(in);
+	}
+\end{TPCpp}
+
+\subsubsection{Closing a file}
+
+After reading the file we will close it since it is of no further use.
+
+\begin{TPCpp}
+	infile.close();
+\end{TPCpp}
+
+\subsubsection{Writing to a file}
+
+Now we'd like to write our read and processed file content to another file. First we open a file.
+
+\begin{TPCpp}
+	//Declare instance of ofstream
+	ofstream outfile;
+	//Open a file 	outfile.open("new_textfile.txt",ios::out)
+\end{TPCpp}
+
+The we use \verb+outfile+ to write to a new file.
+
+\begin{TPCpp}
+	//After opening writing is possible
+	while(!whole_file.empty()){
+		char temp = whole_file.pop_back();
+		//Some kinda caesar code
+		temp++;
+		//Write to file
+		outfile<<temp;
+	}	
+\end{TPCpp}
+
+After that the file is closed.
+
+\begin{TPCpp}
+	outfile.close();
+	return 0;
+}
+\end{TPCpp}
 
 \section{struct}
 
+Struct allows the definition of new custom data types.
+
+\begin{TPCpp}
+/* 
+struct <name> {
+	<type> <member_name>;
+	.
+	.
+	.
+}<optional_instance_name>;
+
+*/
+
+struct rational{
+	int n;
+	int d;
+}a;
+
+rational b;
+\end{TPCpp}
+
+\begin{itemize}
+\item Now the new type \verb+rational+ is defined.
+\item It can be directly instantiated by inserting one or several valid identifiers at the end of the struct definition. In this case we made instance \verb+a+.
+\item When making new instances afterwards we can use the name of the new type just as we use the basic types.
+\item Member variables can be of basic type as well as of custom type.
+\item Member types can be combined in any way desired.
+\end{itemize}
+
+Members can be initialized directly:
+
+\begin{TPCpp}
+//uninitialized
+rational s;
+
+//member-by-member
+rational t = {1,5};
+
+//copy member-by-member
+rational u = t; 
+\end{TPCpp}
+
+Note that for custom data types not all operators work out of the box. This leads to the idea of overloading operators, as described in section \ref{sec:OperatorOverloading}.
+
 \section{class}
+
+Classes empower the concept of data encapsulation in c++. They are a variant of structs and as such can have member variables as well as member functions. 
+
+\vspace{3ex}
+
+Note that structs basically have the same functionality as classes. They are introduced differently for didactic reasons but actually the single difference between the two is that the members of a struct are public by default and the members of a class a private by default.
+
+\subsection{Object oriented programming}
+
+The basic idea of object oriented programming is to build software such that it models reality. For that reason the desired functionality is embedded into a set of objects interacting with one another to solve a set task. With object oriented programming come two main advantages:
+
+\begin{itemize}
+\item \textbf{Reusability:} Once described the functionality of a class can be instantiated multiple times, inherited from and adapted for the whole inheritance tree in a single place.
+\item \textbf{Encapsulation:} Based on the fact that variables can be made private it is possible to hide information from the user or from other parts of the program. This enables a narrow definition of allowed interactions with data, such that invalid access can be prevented by design.
+\end{itemize}
+
+\subsection{Basics}
+
+\begin{itemize}
+\item \textbf{Class:} The definition of an object, introducing a new data type.
+\item \textbf{Instance:} Existing copy of the newly defined data type.
+\end{itemize}
 
 \subsection{Class Members}
 
+There are two types of class members: \textbf{member functions} and \textbf{member variables}. Member variables are data points within the class. Member functions can access these data points for processing. The members of a class exist in instances of the class.
+
+\begin{TPCpp}
+/*
+class <class_name> {
+	//member variable
+	<type> <member_name>;
+	//member function
+	<rtype> <member_fun_name> ();
+	
+}<optional_instance_name>;
+*/
+class Vector {
+	//member defintion
+}a;
+\end{TPCpp}
+
+As seen above instances of a class can be directly added to the class definition.
+
+\begin{TPCpp}
+int main(){
+	Vector b;
+}
+\end{TPCpp}
+
+Alternatively the class name can be used as a type specifier, for introducing a new instance.
+
 \subsection{Class Access Modifiers}
 
-\subsection{Constructor and Destructor}
+Class members, not yet considering inheritance, can be either private or public.
 
-\subsection{Copy Constructor}
+\begin{itemize}
+\item Public members are accessible from outside.
+\item Private members are only accessible through member functions.
+\end{itemize}
+
+\textbf{If there is no access modifier all members of a class are private by default!}
+
+\begin{TPCpp}
+class Vector {
+	//default: private
+	double x; //is private
+private: 
+	double y; //is private
+public:
+	void print(); //is public
+};
+\end{TPCpp}
+
+\subsubsection{Access methods}
+
+In order to define an interface to the hidden data one often defines get- and set-functions:
+
+\begin{TPCpp}
+	//within definition of vector
+	double get_x() const {return x;}
+	double get_y() const {return y;}
+	
+	void set_x(const double _x) {x = _x;}
+	void set_y(const double _y) {y = _y;}
+\end{TPCpp}
+
+\subsubsection{Access operators}
+
+When accessing the members of a class not from within the class but from the outside, through an instance, there exist two operators managing access to public members:
+
+\begin{TPCpp}
+//Instance of Vector
+Vector a;
+//Pointer of type Vector to a
+Vector * pointer = &a;
+
+//Direct access operator .
+a.set_x(7);
+
+//Indirect access operator ->
+pointer->set_x(7);
+\end{TPCpp}
+
+The \verb+operator.+ is used in connection with an instance of a class. It directly accesses the appended member. The \verb+operator->+ is used for accessing the members of an instance through a pointer. In addition to member access it dereferences the pointer.
+
+\subsubsection{This pointer}
+
+Sometimes it is useful to have access on the instance of a class as an object, not only on its members. In that case the \verb+this+ pointer comes in handy. It is a pointer saving the address of the instance it is used in. Thus the above defined access methods could also look like this:
+
+\begin{TPCpp}
+void get_x() const {return this->x;}
+void get_y() const {return (*this).y;}
+\end{TPCpp}
+
+\subsection{Constructors}
+
+\begin{itemize}
+\item Standard member function, exists in default form if not overwritten.
+\item Used to initialize member variables.
+\item Automatically called upon instantiation.
+\item Carries the name of the class.
+\item Can be overloaded for different types of initializations.
+\item The default constructor does not initialize anything.
+\end{itemize}
+
+\begin{TPCpp}
+class Vector {
+	double x,y;
+public:
+	//Overwriting the default constructor
+	Vector (){
+		x = 0;
+		y = 0;
+	}
+	//Overloading the constructor
+	Vector (double _x, double_y)
+		: x(_x),y(_y) {}
+}
+\end{TPCpp}
+
+The above implementation of the constructor overload makes use of the so called \textbf{initializer list} which is a list of member variables and in brackets there respective value. This comes in especially handy if a class has const members that cannot be initialized within the function body.
+
+\subsubsection{Copy Constructor}
+
+The copy constructor is used for:
+
+\begin{itemize}
+\item Initializing one object from another of the same type.
+\item Copying an object to pass it as an argument to a function.
+\item copy an object to return it from a function.
+\end{itemize}
+
+The default copy constructor simply sets the member variables of the target equal with those of the source. This is not sufficient if a class has dynamic memory allocated.
+
+\begin{TPCpp}
+/*
+<classname> (const <classname> & obj) {
+	//body of constructor
+}
+*/
+
+Vector (const Vector& obj){
+	this->x = obj.x;
+	this->y = obj.y;
+}
+\end{TPCpp}
+
+\subsection{Destructor}
+
+\begin{itemize}
+\item Standard member function, exists in default form if not overwritten.
+\item Used to deallocate memory taken by an instance upon its deletion.
+\item Is called whenever an instance is explicitly deleted or reaches end of scope.
+\item The destructor only needs to be overwritten in case the class allocates dynamic memory.
+\end{itemize}
+
+\begin{TPCpp}
+/*
+~<classname> (){
+	delete <dynamic_variable>;
+	delete [] <dynamic_array>;
+}
+*/
+
+~Vector (){
+	cout<<"Vector is being destructed."<<endl;
+}
+\end{TPCpp}
+
+For the lack of dynamically allocated memory the default constructor of Vector has been overloaded with this simple output, an easy way to see when the destructor is called.
 
 \subsection{friend}
 
-\subsection{this}
+To allow non-member function full access to the private variables of a class, friend functions can be defined as follows:
+
+\begin{TPCpp}
+//outside class
+void foreign_print(Vector obj){
+	cout<<obj.x<<" "<<obj.y;
+}
+
+//inside class
+
+friend void foreign_print(Vector obj);
+\end{TPCpp}
 
 \subsection{Static Members}
+
+A static member of a class exists only once, independent of how many instances of that class are around. All instances work with one and the same static variable.
+
+\begin{TPCpp}
+static <member_type> <member_name>;
+\end{TPCpp}
 
 \section{Inheritance}
 
 \subsection{Access Control and Inheritance}
 
+\subsection{Polymorphism}
+
 \section{Overloading}
+
+Functions and operators can work differently, depending on their arguments or operands.
 
 \subsection{Function overloading}
 
+For functions overloading means varying the types, the order and the number of arguments given to the function. For each variation a different behaviour can be programmed. Upon call the handed arguments are compared with the overload signatures and the matching function is executed. If no matching function is found \easyurl{overload resolution rules}{https://en.cppreference.com/w/cpp/language/overload_resolution} are applied.
+
+\begin{TPCpp}
+//a way of identifying unknown variable types:
+
+void identify (int a){
+	cout<<"My type is int."<<endl;
+}
+
+void identify (double a){
+	cout<<"My type is double."<<endl;
+}
+\end{TPCpp}
+
+Based on the rule stated above the following overloads are possible:
+
+\begin{TPCpp}
+void fun();			//without argument
+void fun(int a);	//with argument
+void fun(double b); //different type
+//different number of arguments
+void fun(int a, int b);
+//different type of arguments
+void fun(int a, double b);
+//different order of arguments
+void fun(double b, int a);
+\end{TPCpp}
+
+Based on the above the following overloads are not valid:
+
+\begin{TPCpp}
+//No distinction by return type
+int fun();
+//No distinction by argument name
+int fun(int different);
+\end{TPCpp}
+
 \subsection{Operator overloading}
+\label{sec:OperatorOverloading}
+
+Operators are can be described like functions. Depending on their definition they have a set of arguments, i.e. left-hand side and right-hand side for \verb-operator+- and a return value connected to a post condition, which in this case would be: returns the sum of the two handed variables. As done above, in c++ operators can be addressed via their name and the keyword \verb+operator+ in front.
+
+\vspace{3ex}
+
+Based on that idea it is obvious that overloads are also possible for operators, which allows defining them also for our custom data types. Thus an operator overload is defined as a normal function, using \verb+operator<name>+ as a function name, and defining the argument list such that it fits the chosen operator.
+
+\vspace{3ex}
+
+There is a binary \verb+operator-+ and a unary \verb+operator-+. To show how they differ in their signature the following example is established for the custom data type \verb+rational+.
+
+\begin{TPCpp}
+struct rational{
+	int n;
+	int d;
+};
+\end{TPCpp}
+
+The overloading of the binary operator, taking the value on its left and the value on its right:
+
+\begin{TPCpp}
+rational operator- (const rational& a, const rational& b){
+	rational result;
+	result.n = a.n*b.d - a.d*b.n;
+	result.d = a.d*b.d;
+	return result;
+}
+\end{TPCpp}
+
+The overloading of the unary operator, taking the value on its right. 
+
+\begin{TPCpp}
+rational operator- (const rational& a){
+    rational result = a;
+	result.n = -result.n;
+	return result;
+}
+\end{TPCpp}
+
+Note that the parameters are handed as const references, therefore they are not changed by accident and rather than copying the whole structure a referenced is handed to the function.
+
+Both operators in use:
+
+\begin{TPCpp}
+int main(){
+	rational a = {1,3};
+	rational b = {2,4};
+	//unary operator-
+	rational c = -b; // -2/4
+	//binary operator-
+	rational d = a-b;
+}
+\end{TPCpp}
 
 \subsubsection{Overloadable operators}
 
-\section{Polymorphism}
+\begin{TTable}{*{6}{p{0.1\linewidth}}}
+\verb-+-&\verb+-+&\verb+*+&\verb+/+&\verb+%+&\verb+^+\\
+\verb+&+&\verb+|+&\verb+~+&\verb+!+&\verb+,+&\verb+=+\\
+\verb+<+&\verb+>+&\verb+<=+&\verb+>=+&\verb-++-&\verb+--+\\
+\verb+<<+&\verb+>>+&\verb+==+&\verb+!=+&\verb+&&+&\verb+||+\\
+\verb-+=-&\verb+-=+&\verb+/=+&\verb+%=+&\verb+^=+&\verb+&=+\\
+\verb+|=+&\verb+*=+&\verb+<<=+&\verb+>>=+&\verb+[]+&\verb+()+\\
+\verb+->+&\verb+->*+&\verb+new+&\verb+new[]+&\verb+delete+&\verb+delete[]+\\
+\end{TTable}
+
+Note that there are certain operators that cannot be overloaded:
+
+\begin{TTable}{*{4}{p{0.1\linewidth}}}
+\verb+::+&\verb+.*+&\verb+.+&\verb+?:+\\
+\end{TTable}
+
+Find examples for the overloading of any of the operator types listed above \easyurl{here}{https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm}
+
+\subsubsection{Chained operators}
+
+Certain operators allow to be chained together. Good examples are the assignment operator or the I/O operators \verb+<<+ and \verb+>>+. To preserve the ability to be put in chains, these operators need to return references. Why this is necessary will become obvious in the following example:
+
+\begin{TPCpp}
+#include <iostream>
+
+using namespace std;
+
+cout<<"Hello"<<" world"<<'!'<<endl;
+\end{TPCpp}
+
+The \verb+operator<<+ is left-to-right associative, therefore its first evaluated occurrence is \verb+cout<<"Hello"+. This term has to return a reference to the standard output stream such that the next evaluation \verb+cout<<" world"+ can be made properly.
+
+\begin{TPCpp}
+std::ostream& operator<< (std:ostream& out, rational r){
+	return out << r.n << "/" << r.d;
+}
+\end{TPCpp}
 
 \section{Dynamic Memory}
 
 \section{Namespaces}
 
-\section{Templates}
+\section{\ntn{Templates}}
 
-\section{Signal Handling}
+Templates are the foundation of generic programming, which in different terms is the practice of writing code in a way that is independent of any particular data type. A template can be understood as a blueprint or a formula for creating a generic class or function. The first example of templates we got to enjoy was \verb+vector+ which was always handed its specific data type via angled brackets.
+
+\subsection{\ntn{Template function}}
+
+\begin{TPCpp}
+/* general form of a template
+template <class type> ret-type func-name(parameter list) {
+	// body of function
+}
+*/
+template <typename T>
+T const& Max(T const& a, T const& b){
+	return a<b ? b:a;
+}
+\end{TPCpp}
+
+In the example above we defined a function template \verb+Max+ that can now be used for any data type that has suitable overloading for the used operators. Without templates we would need to overload \verb+Max+ for every new datatype we'd like to feed it. When called a template function can recognize the data type it is fed and in contrast to template classes it does not need to be told explicitly what data type to expect as you can see below:
+
+\begin{TPCpp}
+int main(){
+	int j = 29;
+	int k = 20;
+	Max(i,j); //returns 29
+	
+	string s1 = "Hello";
+	string s2 = "World";
+	Max(s1,s2); //return "World";
+\end{TPCpp}
+
+\subsection{\ntn{Template class}}
+
+\begin{TPCpp}
+/* general form a of a template class
+template <class type> class class-name{
+	//class contents
+}
+*/
+
+//in the header file
+template <class T>
+class Stack {
+private:
+	vector<T> elements;
+public:
+	//push element
+	void push(T const&);
+	//pop element
+	void pop();
+	//return top element
+	T top() const;
+	//return true if empty
+	bool empty() const;
+}
+\end{TPCpp}
+
+Above we have declared a template class that can handle stacks of any variable type we choose. Now we need to see how member functions are defined in this case:
+
+\begin{TPCpp}
+//in the cpp file
+template <class T>
+void Stack<T>::push (T const& element){
+	// append copy of passed element
+	elements.push_back(element);
+}
+\end{TPCpp}
+
+After having defined all member functions we can use our stack as follows:
+
+\begin{TPCpp}
+Stack<int> intStack;
+
+//manipulate our intStack
+intStack.push(7);
+cout << intStack.top() << endl;
+
+Stack<string> stringStack;
+
+stringStack.push("hello");
+stringStack.push("world");
+cout<<stringStack.top();
+stringStack.pop();
+cout<<stringStack.top();
+//we just made ourselves 
+//a nice implementation of hello world ;)
+\end{TPCpp}
 
 \section{Standard Template Library}
 
-\section{Libraries}
-
-\subsection{iostream}
-
-\subsection{math}
-
-\subsection{ctime}
-
-
-
-
-
-
+The C++ STL (\easyurl{Standard Template Library}{https://www.tutorialspoint.com/cplusplus/cpp_stl_tutorial.htm}) is a powerful set of C++ template classes to provide general-purpose classes and functions with templates that implement many popular and commonly used algorithms and data structures like vectors, lists, queues, and stacks.
 
 \end{multicols*}
 \end{document}
