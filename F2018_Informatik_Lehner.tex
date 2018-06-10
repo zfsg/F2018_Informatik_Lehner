@@ -5,7 +5,7 @@
 
 %Set to 0 for making without examples
 %Set to 1 for making with examples
-\gdef\conditionmacro{1}
+\gdef\conditionmacro{0}
 
 %\newenvironment{example}{
 %\ifnum\conditionmacro=1}
@@ -24,34 +24,39 @@
 \newtheorem{define}{Definition}
 
 \makenoidxglossaries
-\newglossaryentry{Algorithm}{name={Algorithm},description={An algorithm is a set of rules that defines a sequence of operations to get to the solution of a problem.}}
+\newglossaryentry{Algorithm}{name={Algorithm},description={An algorithm is a set of rules that defines a sequence of operations leading to the solution of a problem.}}
 \newglossaryentry{Language}{name={Language},description={A programming language is a set of instructions for a computer that can be used to write programs that implement algorithms.}}
-\newglossaryentry{Syntax}{name={Syntax},description={The syntax of a computer language is the set of rules that defines the combinations of symbols that are considered to be a correctly structured document or fragment in that language. Is a program grammatically correct?}}
+\newglossaryentry{Syntax}{name={Syntax},description={The syntax of a computer language is the set of rules that defines the combinations of symbols that are considered to be a correctly structured program in that language. Is a program grammatically correct?}}
 \newglossaryentry{Semantics}{name={Semantics},description={The semantics of a computer language define how the language has to be interpreted. What is the meaning of a certain program?}}
 \newglossaryentry{Editor}{name={Editor},description={A program that allows writing code. There exist powerful editors that can check syntactical correctness on the fly.}}
 \newglossaryentry{Compiler}{name={Compiler},description={A compiler translates a program written in a programming language to machine code, such that it can be executed by the machine.}}
 \newglossaryentry{Computer}{name={Computer},description={A computer is a device that is capable of executing machine code.}}
 \newglossaryentry{Comments}{name={Comments},description={Comments document the implemented algorithm within the program for the reader. They are ignored by the compiler.}}
 \newglossaryentry{IncDir}{name={Include Directives},description={Include directives specify the additional libraries used in a program.}}
-\newglossaryentry{Main}{name={The main function},description={The main function exists in every cpp-program. It is unique and contains the all instructions necessary to execute the program.}}
+\newglossaryentry{Main}{name={The main function},description={The main function exists in every c++-program. It is unique and contains the all instructions necessary to execute the program.}}
 \newglossaryentry{Statement}{name={Statement},description={Statements are the building blocks of a program. They are executed sequentially and end with a semicolon.}}
 \newglossaryentry{Declaration}{name={Declaration},description={A declaration introduces a new name to the program.}}
 \newglossaryentry{Definition}{name={Definition},description={A definition introduces a body to a name within the program.}}
-\newglossaryentry{Initialization}{name={Initialization},description={An initialization introduces a value to a defined name and body.}}
-\newglossaryentry{Literals}{name={Literals},description={Literals represent constant value within the program. They have a defined type and value.}}
+\newglossaryentry{Initialization}{name={Initialization},description={An initialization introduces a value to a defined name.}}
+\newglossaryentry{Literals}{name={Literals},description={Literals represent constant values within the program. They have a defined type and value.}}
 \newglossaryentry{Variables}{name={Variables},description={Variables represent possibly changing values within the program. They have name, type, value and address.}}
 \newglossaryentry{Objects}{name={Objects},description={Objects represent values in the computer memory. They have type, adress and value. They can be named, but can also be anonymous. Described less generally an object can be a variable, a data structure, a function, or a method.}}
 \newglossaryentry{Expressions}{name={Expressions},description={Expressions represent calculations. They are a combination of values, literals, operators and functions. They are primary if they consist of a single name/literal. Otherwise they are compound. They have type and value.}}
 \newglossaryentry{Lvalue}{name={Lvalue},description={An lvalue is a changeable expression that has an address.}}
 \newglossaryentry{Rvalue}{name={Rvalue},description={An rvalue is an expression that is not an lvalue. An rvalue cannot be changed. Every lvalue can be used as an rvalue but not vice-versa.}}
-\newglossaryentry{Operator}{name={Operator},description={An operator connects expressions to compound expressions. It specifies the expected operand in type and if it is an rvalue or an lvalue. Operators have an arity.}}
-\newglossaryentry{Arity}{name={Arity},description={Arity is the number of arguments or operands an operator or a function takes. For example there exist unary and binary operators.}}
+\newglossaryentry{Operator}{name={Operator},description={An operator connects expressions to compound expressions. It specifies the expected operand(s) in type and if it is an rvalue or an lvalue. Operators have an arity.}}
+\newglossaryentry{Arity}{name={Arity},description={Arity is the number of arguments or operands an operator or a function takes. For example there exist unary (single argument) and binary (two arguments) operators.}}
 \newglossaryentry{Block}{name={Block},description={A block in c++ is a number of lines of code enclosed by curly brackets.}}
 
 \begin{document}
 \begin{multicols*}{4}
+\small
+\ifnum\conditionmacro=1
+\footnotesize
+\fi
 \maketitle
 \tableofcontents
+\normalsize
 \end{multicols*}
 
 \begin{multicols*}{2}
@@ -61,18 +66,32 @@
 
 \ifnum\conditionmacro=1
 \section{How to...}
+\label{sec:HowTo}
 
 \subsection{\ntn{... use this summary}}
+\label{sec:UseThisSummary}
 
-This summary is an overview of the functionality of \verb.C++. in connection with the informatics course for mechanical engineers. It covers the content of the lectures but also contains additional information.
+This summary is an overview of the functionality of \verb.C++. in connection with the informatics course for mechanical engineers. It covers the content of the lectures as well as additional information.
+
+\vspace{3ex}
 
 To emphasize the connection to the lecture all chapters containing purely additional information are marked in blue.
 
+\vspace{3ex}
+
+Note that:
+\begin{itemize}
+\item This summary has been made with care, but does not claim to be free of errors. Bug reports are appreciated and to be sent to \easyurl{me}{mailto:muellegi@student.ethz.ch}.
+\item Code examples have been compiled to check for correctness, but are often shortened for better visual appearance. Often standard libraries have been omitted as well as \verb+using namespace std;+.
+\end{itemize}
+
 \subsection{\ntn{... correct compilation errors}}
+\label{sec:CorrectCompilationErrors}
 
 Read error messages, review basic syntax, look for the additional semicolon.
 
 \subsection{\ntn{... correct runtime errors}}
+\label{CorrectRuntimeErrors}
 
 Use a \easyurl{debugger}{https://www.visualstudio.com/de/thank-you-downloading-visual-studio/?sku=Community&rel=15}.
 
@@ -90,17 +109,19 @@ int main(){
 }
 \end{TPCpp}
 
-\subsection{... approach problems}
+\subsection{\ntn{... approach problems}}
+\label{sec:ApproachProblems}
 
 \begin{enumerate}
 \item Define your problem.
-\item Find your algorithm.
-\item Code feature.
+\item Find your algorithm, divide into features.
+\item Code single feature.
 \item Compile.
 \item \verb+goto+ 3.
 \end{enumerate}
 
-\subsection{... find more information}
+\subsection{\ntn{... find more information}}
+\label{sec:FindMoreInformation}
 
 \begin{itemize}
 \item \easyurl{Comprehensive Tutorial}{https://www.tutorialspoint.com/cplusplus/index.htm}
@@ -114,14 +135,18 @@ int main(){
 
 \printnoidxglossary[sort=def,title={Terms},nonumberlist=true,nopostdot=true]
 
+\ifnum\conditionmacro=1
 \section{\ntn{Nice to know}}
+\label{sec:NiceToKnow}
 
-\subsection{\ntn{Preprocessor directives}}
+\subsection{\ntn{Preprocessor Directives}}
+\label{sec:PreprocessorDirectives}
 
 Preprocessor directives are lines preceded by a \verb+#+. These lines are not program statements but directives for the preprocessor, thus are evaluated before the program is compiled.
-These preprocessor directives extend only across a single line of code. As soon as a newline character is found, the preprocessor directive is ends. No semicolon (;) is expected at the end of a preprocessor directive. The only way a preprocessor directive can extend through more than one line is by preceding the newline character at the end of the line by a backslash (\textbackslash).
+These preprocessor directives extend only across a single line of code. As soon as a newline character is found, the preprocessor directive is ends. No semicolon is expected at the end of a preprocessor directive. The only way a preprocessor directive can extend through more than one line is by preceding the newline character at the end of the line by a backslash.
 
 \subsubsection{\ntn{Macro Definitions}}
+\label{sec:MarcoDefinitions}
 
 \begin{TPCpp}
 #define identifier replacement
@@ -142,11 +167,9 @@ int main(){
 	int x = 5, y;
 	y = getmax(x,2); //replaced as: y = x>2?x:2
 }
-
-}
 \end{TPCpp}
 
-This would replace any occurrence of \verb+getmax+ followed by two arguments by the replacement expression, but also replace each identifier by its respective argument.
+The above will replace any occurrence of \verb+getmax+ followed by two arguments by the replacement expression, but also replace each identifier by its respective argument.
 
 \begin{TPCpp}
 #define str(x) #x
@@ -163,7 +186,8 @@ glue(c,out) << "test"; //replaced as: cout << "test";
 
 The operator \verb+##+ concatenates two arguments leaving no white space between them.
 
-\subsubsection{\ntn{Conditional inclusions}}
+\subsubsection{\ntn{Conditional Inclusions}}
+\label{sec:ConditionalInclusions}
 
 The directives \verb+#ifdef+, \verb+#ifndef+, \verb+#if+, \verb+#endif+, \verb+#else+ and \verb+#elif+ allow to include or discard part of the code if a certain condition is met.
 
@@ -205,7 +229,8 @@ int table[TABLE_SIZE];
 
 Notice that the compelling advantage of preprocessor directives over normal conditional statements is that preprocessor directives are evaluated before the code is compiled. An interesting application of that concept is the making of different versions of a program, for instance one version that has special debugging precautions and a second version which runs faster but omits these safety measures.
 
-\subsubsection{\ntn{Line control}}
+\subsubsection{\ntn{Line Control}}
+\label{sec:LineControl}
 
  When we compile a program and some error happens during the compiling process, the compiler shows an error message with references to the name of the file where the error happened and a line number, so it is easier to find the code generating the error.
 
@@ -220,7 +245,8 @@ int a?;
 
 This code will generate an error that will be shown as error in file \verb+"assigning variable", line 20+.
 
-\subsubsection{\ntn{Error directive}}
+\subsubsection{\ntn{Error Directive}}
+\label{sec:ErrorDirective}
 
 The \verb+#error+ directive aborts the compilation process when it is found, generating a compilation error that can be specified as its parameter.
 
@@ -230,7 +256,8 @@ The \verb+#error+ directive aborts the compilation process when it is found, gen
 #endif
 \end{TPCpp}
 
-\subsubsection{\ntn{Source file inclusion}}
+\subsubsection{\ntn{Source File Inclusion}}
+\label{sec:SourceFileInclusion}
 
 The \verb+#include+ directive is replace by the entire content of the specified header or file. There are two ways to use \verb+#include+:
 
@@ -239,15 +266,17 @@ The \verb+#include+ directive is replace by the entire content of the specified 
 #include "file"
 \end{TPCpp}
 
-In the first case, a header is specified between angle-brackets $<>$. This is used to include headers provided by the implementation, such as the headers that compose the standard library (iostream, string,...). Whether the headers are actually files or exist in some other form is implementation-defined, but in any case they shall be properly included with this directive.
+In the first case, a header is specified between angle-brackets $<>$. This is used to include headers provided by the implementation, such as the headers that compose the standard library (iostream, string,...).
 
 The syntax used in the second \verb+#include+ uses quotes, and includes a file. The file is searched for in an implementation-defined manner, which generally includes the current path. In the case that the file is not found, the compiler interprets the directive as a header inclusion, just as if the quotes (``'') were replaced by angle-brackets ($<>$).
 
-\subsubsection{\ntn{Pragma directive}}
+\subsubsection{\ntn{Pragma Directive}}
+\label{sec:PragmaDirective}
 
 This directive is used to specify diverse options to the compiler. These options are specific for the platform and the compiler you use. Consult the manual or the reference of your compiler for more information on the possible parameters that you can define with \verb+#pragma+.
 
-\subsubsection{\ntn{Predefined macro names}}
+\subsubsection{\ntn{Predefined Macro Names}}
+\label{sec:PredefinedMacroNames}
 
 \begin{TTable}[1]{lp{0.7\linewidth}}
 \verb+__LINE__+&	Integer value representing the current line in the source code file being compiled.\\
@@ -256,17 +285,20 @@ This directive is used to specify diverse options to the compiler. These options
 \verb+__TIME__+&A string literal in the form ``hh:mm:ss'' containing the time at which the compilation process began.\\
 \verb+__cplusplus+&An integer value. All C++ compilers have this constant defined to some value. Its value depends on the version of the standard supported by the compiler.\\
 \end{TTable}
+\fi
 
 \section{Positional Notation}
 \label{sec:PositionalNotation}
 
 In short, a positional notation is defined as a method of representing or encoding numbers. It is characterized by its use of the same symbol for different orders of magnitude (for example the ``ones place'', the ``tens place'' and the ``hundreds place'' in case of the decimal system). With the inclusion of the radix point, a symbol separating the integer part of the number of the fractional part, positional notation can represent rational numbers.
 
-\subsection{Binary numbers}
+\subsection{Binary Numbers}
+\label{sec:BinaryNumbers}
 
 A binary number is a number expressed by a base-2 numeral system which uses only two symbols, typically 0 and 1.
 
 \subsubsection{From Decimal to Binary}
+\label{sec:FromDecimalToBinary}
 
 To find the binary representation of a decimal number repeatedly divide by two and list the remainders. The resulting sequence is the binary representation in reverse order. For comparison the same algorithm is applied to a decimal number on the left.
 
@@ -292,17 +324,21 @@ To find the binary representation of a decimal number repeatedly divide by two a
 \end{minipage}
 
 \subsubsection{From Binary to Decimal}
+\label{sec:FromBinaryToDecimal}
 
 To find the decimal representation of a binary number simply list its digits, multiply each with its place value and sum up.
 
+\begin{center}
 \begin{tabular}{llllllll}
 &&&&&&&$\sum$\\
-Ziffern&1&1&1&1&0&1\\
-Multiplikator&32&16&8&4&2&1\\
-Wert&32&16&8&4&0&1&61\\
+Digits&1&1&1&1&0&1\\
+Factor&32&16&8&4&2&1\\
+Value&32&16&8&4&0&1&61\\
 \end{tabular}
+\end{center}
 
-\subsubsection{Two's complement}
+\subsubsection{Two's Complement}
+\label{sec:TwosComplement}
 
 Two ways of interpreting signed numbers are shortly compared here in order to motivate the convention used.
 
@@ -337,6 +373,7 @@ Bits&Unsigned value&2's&Bits&Unsigned value&2's\\
 The two's complement interprets the first bit as the negative of its value in an unsigned interpretation. As seen above this allows omitting $-0$ as an encoded value and thus enlarges the range by one number: $-(2^{N-1})$ to $2^{N-1}-1$.
 
 \subsubsection{Overflow and Underflow}
+\label{sec:OverflowAndUnderflow}
 
 When calculating with numbers in a restricted range of values as on computer memory arithmetic operations can lead to over- and underflows. This is dangerous since there is no error message for such miscalculations.
 
@@ -352,7 +389,8 @@ Where $2^B$ is twice the value of the most significant bit and $B$ is the number
 
 When an int is assigned a value larger than can be saved a so called overflow happens, which means that the first bit of the number is switched and a large negative number results.
 
-\subsubsection{Estimation of the order of magnitude}
+\subsubsection{Estimation of the Order of Magnitude}
+\label{sec:EstimationOfTheOrderOfMagnitude}
 
 \begin{align*}
 2^{10}&=1024=1Ki\approx 10^3\\
@@ -360,7 +398,9 @@ When an int is assigned a value larger than can be saved a so called overflow ha
 2^{64}&=16Ei\approx 16\cdot10^{18}
 \end{align*}
 
+\ifnum\conditionmacro=1
 \subsubsection{\ntn{Orders of magnitude of data}}
+\label{sec:OrdersOfMagnitudeOfData}
 
 \begin{TTable}{lll|lll}
 \multicolumn{6}{c}{Multiple of bytes}\\
@@ -373,8 +413,9 @@ $1000^4$&TB&terabyte&$1024^4$&TiB&tebibyte\\
 $1000^5$&PB&petabyte&$1024^5$&PiB&pebibyte\\
 $1000^6$&EB&exabyte&$1024^5$&EiB&exbibyte\\
 \end{TTable}
+\fi
 
-\subsection{Floating point numbers}
+\subsection{Floating Point Numbers}
 \label{sec:FloatingPointNumbers}
 
 A possible representation of numbers with a fractional part is fixing the number of digits before and after the radix point. The disadvantage of such a representation lies in its limitedness. A floating point system can tremendously increase the flexibility of such a notation. It consists of a certain number of significant digits and  the position of the radix point. In other words it has a mantissa and an exponent. Note that no floating point system can fully represent $\mathbb{R}$, since the length of the mantissa is limited.
@@ -385,7 +426,7 @@ Any floating point system can be described with a small set of parameters:
 
 \[\mathcal{F}^{(\ast)}(\underbrace{\beta}_\text{Basis $\geq$ 2},\overbrace{p}^\text{Length of mantissa$\geq$1},\underbrace{e_{min},e_{max}}_\text{smallest and largest exponent})\]
 
-Where the asterisk, when present, signalises that the represented number always start with a 1 (only works for basis 2). This first digit is called the hidden bit, since based on the above assumption, it does not need to be saved explicitly. Nevertheless it is counted as part of the mantissa. Of course this definition
+Where the asterisk, when present, signalises that the represented number always starts with a 1 (only works for basis 2). This first digit is called the hidden bit, since based on the above assumption, it does not need to be saved explicitly. Nevertheless it is counted as part of the mantissa.
 
 When saved in computer memory the available bits are assigned in the following manner. Example for $\mathcal{F}^\ast(2,6,-7,7)$.
 
@@ -408,11 +449,13 @@ $\underbrace{\textcolor{red}{0}\textcolor{green}{0000}\textcolor{blue}{00000}}_\
 \end{center}
 \end{enumerate}
 
-\subsubsection{Smallest normalized and largest positive number}
+\subsubsection{Smallest Normalized and Largest Positive Number}
+\label{sec:SmallestNormalizedAndLargestPositiveNumber}
 
 \[2^{e_{min}}\qquad\qquad\qquad\left(1-\left(\frac{1}{2}\right)^p\right)\beta^{e_{max}+1}\]
 
-\subsubsection{Decimal to binary representation}
+\subsubsection{Decimal to Binary Representation}
+\label{sec:DecimalToBinaryRepresentationFloat}
 
 \begin{minipage}{0.45\linewidth}
 \begin{center}
@@ -445,16 +488,22 @@ $x$&$b_i$&$x-b_i$\\\hline
 \end{equation*}
 \end{minipage}
 
-\subsubsection{Binary to decimal representation}
+What is concluded from this example that not all numbers are finitely representable and we can only save finite representations in the given floating point system.
+
+\subsubsection{Binary to Decimal Representation}
+\label{sec:BinaryToDecimalRepresentationFloat}
 
 \begin{center}
-\begin{tabular}{ll|l|l|l|l|l|l|l}
-binary:&1&1&1&1&.&1&1&1\\\hline
-decimal:&8&4&2&1&&$\frac{1}{2}$&$\frac{1}{4}$&$\frac{1}{8}$
+\begin{tabular}{llllllllll}
+&&&&&&&&&$\sum$\\
+digit:&1&1&0&1&.&1&0&1\\
+factor:&8&4&2&1&&$\frac{1}{2}$&$\frac{1}{4}$&$\frac{1}{8}$\\
+value&8&4&0&1&&$\frac{1}{2}$&0&$\frac{1}{8}$&13.625
 \end{tabular}
 \end{center}
 
-\subsubsection{Guidelines when using floating point arithmetics}
+\subsubsection{Guidelines when Using Floating Point Arithmetics}
+\label{sec:GuidelinesWhenUsinFloatingPointArithmetics}
 
 \begin{enumerate}
 \item Single precision: $\mathcal{F}^\ast(2,24,-126,127)$
@@ -464,11 +513,13 @@ decimal:&8&4&2&1&&$\frac{1}{2}$&$\frac{1}{4}$&$\frac{1}{8}$
 \item Never subtract two numbers of comparable size!
 \end{enumerate}
 
-\subsection{Hexadecimal numbers}
+\subsection{Hexadecimal Numbers}
+\label{sec:HexadecimalNumbers}
 
 A hexadecimal number is a number expressed by a base-16 numeral system which uses the symbols 0-9 and A-F. For conversion between hexadecimal and decimal apply the algorithms learned for binary numbers. On preference convert to binary first, using hex nibbles.
 
-\subsubsection{Hex nibbles}
+\subsubsection{Hex Nibbles}
+\label{sec:HexNibbles}
 
 Any of the hexadecimal digits can be understood as a nibble (4 bits). Therefore hexadecimal numbers can be viewed as a compact representation of binary numbers, since every hexadecimal bit directly translates to a certain nibble as listed below.
 
@@ -485,14 +536,15 @@ hex&bin&dec&hex&bin&dec\\
 \end{TTable}
 
 \ifnum\conditionmacro=1
-Beispiel mit 32-bit Zahlen: 0x00000000 -- 0xffffffff
+Example with 32-bit Numbers: 0x00000000 -- 0xffffffff
 \begin{itemize}
-\item 0x80000000: höchstes Bit einer 32-bit Zahl gesetzt
-\item 0xffffffff: alle Bits einer 32-bit Zahl gesetzt
+\item 0x80000000: highest bit of a 32-bit number set
+\item 0xffffffff: all bits of a 32-bit number set
 \end{itemize}
 \fi
 
 \section{Extended Backus-Naur-Form}
+\label{sec:ExtendedBackusNaurForm}
 
 The Extended Backus-Naur-Form (EBNF) is a formal metalanguage used to describe context free grammars.
 
@@ -501,7 +553,7 @@ The Extended Backus-Naur-Form (EBNF) is a formal metalanguage used to describe c
 \item \textbf{context free grammar:} Rules for composing the words of a language that do not depend on the context. 
 \end{itemize}
 
-\textbf{Short and simple:} The EBNF is a language that defines with a simple syntax what sentences can be built with the words of another language. The EBNF consists of three main elements:
+\textbf{Short and simple:} The EBNF is a language that defines what sentences can be built with the words of another language, with a simple syntax. The EBNF consists of three main elements:
 
 \begin{enumerate}
 \item \textbf{Terminals:} Symbols that are the elemental basis of the language and cannot be further replaced.
@@ -535,9 +587,10 @@ A natural application of the EBNF is the definition of programming languages. Th
 \section{Character encoding}
 \label{sec:CharacterEncoding}
 
-\verb+char+ represents printable characters and small set of control characters. Formally \verb+char+ is an integer type, mostly 8 bit large, encoded in ASCII code.
+\verb+char+ represents printable characters as well as small set of control characters. Formally \verb+char+ is an integer type, mostly 8 bit large, encoded in ASCII code.
 
 \subsection{ASCII}
+\label{sec:ASCII}
 
 \easyurl{ASCII}{http://www.cplusplus.com/doc/ascii/} coded uses the last 7 bits of char to encode most of the symbols used when typing text. The first bit has a \easyurl{special role}{https://en.wikipedia.org/wiki/UTF-8}.
 
@@ -558,8 +611,10 @@ Practically the alphabet is stored in such a way that the last 5 binary digits i
 
 
 \section{Syntax}
+\label{sec:Syntax}
 
-\subsection{Basic program}
+\subsection{Basic Program}
+\label{sec:BasicProgram}
 
 \begin{TPCpp}
 #include <iostream>
@@ -584,6 +639,7 @@ int main(int argc, char ** argv)
 \end{TPCpp}
 
 \subsection{Identifiers}
+\label{sec:Identifiers}
 
 A valid identifier, i.e. the name of a variable is:
 
@@ -600,6 +656,7 @@ More information on \easyurl{Identifiers}{http://en.cppreference.com/w/cpp/langu
 \fi
 
 \subsection{Comments}
+\label{sec:Comments}
 
 C++ allows masking code such that it is not interpreted as part of the program. This enables documenting the program. There are different possibilities:
 
@@ -624,8 +681,10 @@ cout<<"Hello World!<<endl; //comment in a comment
 \end{TPCpp}
 
 \subsection{Data Types}
+\label{sec:DataTypes}
 
 \subsubsection{Primitive Types}
+\label{sec:Primitive Types}
 
 \ifnum\conditionmacro=1
 \begin{TTable}[1]
@@ -656,7 +715,7 @@ Valueless&void\\
 
 \verb+float+ and \verb+double+ are used to save floating point numbers. For clarification check out section \ref{sec:FloatingPointNumbers}.
 
-\paragraph{\ntn{void}}
+\paragraph{void}
 
 The void data type cannot be used as a variable since it does not allocate any memory. However there exist a number of uses:
 
@@ -677,7 +736,8 @@ void print(void){
 }
 \end{TPCpp}
 
-\item \textbf{Declaration of universal pointers:} When used in the declaration of a pointer, void specifies that this pointer is universal, which means that it can point to any other type of data which is not declared with \verb+const+ or \verb+volatile+. A void pointer cannot be dereferenced unless it is cast to another specific type.
+\ifnum\conditionmacro=1
+\item \textbf{\ntn{Declaration of universal pointers:}} When used in the declaration of a pointer, void specifies that this pointer is universal, which means that it can point to any other type of data which is not declared with \verb+const+ or \verb+volatile+. A void pointer cannot be dereferenced unless it is cast to another specific type.
 
 \begin{TPCpp}
 void * universal_pointer;
@@ -686,10 +746,13 @@ universal_pointer = &i;
 //cast to pointer of type int
 int * int_pointer = (int *)universal_pointer;
 \end{TPCpp}
+\fi
 
 \end{enumerate}
 
-\subsubsection{Type modifiers}
+
+\subsubsection{Type Modifiers}
+\label{sec:TypeModifiers}
 
 \ifnum\conditionmacro=1
 There exist a number of type modifiers:
@@ -727,7 +790,8 @@ long double&8bytes&+/- 1.7e +/- 308 (~15 digits)\\
 \end{TTable}
 
 \ifnum\conditionmacro=1
-\subsubsection{\ntn{Find type sizes on your system}}
+\subsubsection{\ntn{Find Type Sizes on Your System}}
+\label{sec:FindTypeSizesOnYourSystem}
 \begin{TPCpp}
 #include <iostream>
 using namespace std;
@@ -746,6 +810,7 @@ int main() {
 \fi
 
 \subsubsection{Find minimum and maximum value of int}
+\label{sec:FindMinimumAndMaximumValueOfInt}
 
 \begin{TPCpp}
 #include <iostream>
@@ -761,18 +826,25 @@ int main() {
 }
 \end{TPCpp}
 
-\subsubsection{Type qualifiers: const \ntn{volatile restrict}}
+\subsubsection{Type Qualifiers: const \ntn{volatile restrict}}
+\label{sec:TypeQualifiersConstVolatileRestrict}
 %const volatile restrict
 
 
 \paragraph{const} Objects of type \verb+const+ cannot be changed by the program during execution.
 
-\textbf{const-correctness: Any variable that does not change its value during the course of the program is to be declared as const!}
-\paragraph{\ntn{volatile}} The modifier \verb+volatile+ tells the compile that a variable's value may be changed in ways not explicitly specified by the program. (Imagine for instance manually changing the position of a switch on a microprocessor.)
-\paragraph{\ntn{restrict}} A pointer qualified by \verb+restrict+ is initially the only means by which the object it points to can be accessed.
+\vspace{3ex}
 
-\subsubsection{\ntn{Storage classes}}
-%auto register static extern mutable
+\textbf{const-correctness:} Any variable that does not change its value during the course of the program is to be declared as const!
+
+\ifnum\conditionmacro=1
+\paragraph{\ntn{volatile}} The modifier \verb+volatile+ tells the compiler that a variable's value may be changed in ways not explicitly specified by the program. (Imagine for instance manually changing the position of a switch on a microprocessor.)
+\paragraph{\ntn{restrict}} A pointer qualified by \verb+restrict+ is initially the only means by which the object it points to can be accessed.
+\fi
+
+\ifnum\conditionmacro=1
+\subsubsection{\ntn{Storage Classes}}
+\label{sec:StorageClasses}
 
 A storage class defines the scope (visibility) and life-time of variables and/or functions within a C++ Program. These specifiers precede the type that they modify.
 
@@ -805,10 +877,12 @@ The extern modifier is most commonly used when there are two or more files shari
 \paragraph{\ntn{mutable}}
 
 The mutable storage class only applies to non-static class members of non-reference and non-const type. When a class member is declared mutable it can be changed by const member functions.
+\fi
 
 \subsubsection{Variable Definition}
+\label{sec:VariableDefinition}
 
-A variable definition tells the compiler where and how much storage to create for the variable. A variable definition specifies a data type and name. Type has to be either a primitive type or a user defined object. Multiple names can be introduced at once if separated by commas.
+A variable definition tells the compiler where and how much storage to create for the variable. A variable definition specifies a data type and name. The type has to be either a primitive type or a user defined object. Multiple names can be introduced at once if separated by commas.
 
 \begin{TPCpp}
 int i,j,k;
@@ -823,20 +897,24 @@ int d = 3, f = 2;
 
 \textbf{If a variable is left uninitialized its value is undefined in general}. However, variables with static storage duration are implicitly set to 0.
 
+\ifnum\conditionmacro=1
 \subsubsection{\ntn{Variable Declaration}}
+\label{sec:VariableDeclaration}
 
 It is possible to declare a variable without defining it. The declaration is accepted during compilation but has to be fitted with a definition at the time of linking of the program. This means that if a program consists of multiple files you can declare your variable wherever you need it but only define it once, since multiple definitions of the same variable are prohibited.
 
 \begin{TPCpp}
-//Variable declaration
+//Variable declaration (everywhere needed)
 extern int a,b; //Compiler knows that the variable exists
 
-//Variable definition
+//Variable definition (only once)
 int a,b; //Compiler knows that the variable exists
          //And allocates the storage space needed
 \end{TPCpp}
+\fi
 
 \subsubsection{\ntn{typedef} and using}
+\label{sec:TypedefAndUsing}
 
 You can create a new name for an existing type with \verb+using+ or \verb+typedef+:
 
@@ -854,11 +932,16 @@ uint a = 3; //a is an unsigned int
 uchar b = '2'; //b is an unsigned char
 \end{TPCpp}
 
+\ifnum\conditionmacro=1
 \subsubsection{\ntn{union}}
+\label{sec:Union}
 
 A union is a special class type that can hold only one of its non-static data members at a time. The union is only as big as necessary to hold its largest data member. The other data members are allocated in the same bytes as part of that largest member. The details of that allocation are implementation-defined, and it's undefined behavior to read from the member of the union that wasn't most recently written.
+\fi
 
+\ifnum\conditionmacro=1
 \subsubsection{\ntn{enum}}
+\label{sec:Enum}
 
 An enumerated type declares an optional type name and a set of zero or more identifiers that can be used as values of the type. This can improve readability of the code as values are given meaning.
 
@@ -879,8 +962,10 @@ c = red;    //c == 0
 c = green;  //c == 5
 c = blue;   //c == 6
 \end{TPCpp}
+\fi
 
 \section{Variable Scope}
+\label{sec:VariableScope}
 
 A scope is a region of the program within which variable definitions persist. There are three types of scopes:
 
@@ -891,6 +976,7 @@ A scope is a region of the program within which variable definitions persist. Th
 \end{enumerate}
 
 \subsection{Blocks}
+\label{sec:Blocks}
 
 A block is a group of statements enclose by curly brackets.
 
@@ -908,6 +994,7 @@ for (int i = 0; i < 10; i++){
 \end{TPCpp}
 
 \subsection{Local Variables}
+\label{sec:LocalVariables}
 
 Variables that are defined within a function or a block can only be used by statements within that same function or block.
 
@@ -933,13 +1020,13 @@ std :: cout << i; // outputs 5
 \end{TPCpp}
 \fi
 
+\ifnum\conditionmacro=1
 \subsection{\ntn{Global Variables}}
+\label{sec:GlobalVariables}
 
 Global variables are defined outside of all the functions, usually on top of the program. They will hold their value throughout the life-time of your program. This also mean that all functions within your program can access these variables.
 
-\ifnum\conditionmacro=1
-
-Including global variables the case of maximum complication, however undesired, is the following:
+Including global variables, the case of maximum complication (however undesired) is the following:
 
 \begin{TPCpp}
 #include <iostream>
@@ -964,10 +1051,12 @@ int main(){
 \fi
 
 \section{Literals}
+\label{sec:Literals}
 
 \subsection{Integer Literals}
+\label{sec:IntegerLiterals}
 
-An integer literal can be a binary, decimal, octal or hexadecimal constant. A prefix specifies the base: \verb+0b+ for binary, \verb+0+ for octal, \verb+0x+ for hexadecimal and nothing for decimal.
+An integer literal can be a binary, decimal, octal or hexadecimal constant. A prefix specifies the base: \verb+0b+ for binary, \verb+0+ (zero) for octal, \verb+0x+ for hexadecimal and nothing for decimal.
 
 An integer literal can also have a suffix that is a combination of u (unsigned) and l (long).
 
@@ -983,8 +1072,9 @@ An integer literal can also have a suffix that is a combination of u (unsigned) 
 \fi
 
 \subsection{Floating-point Literals}
+\label{sec:FloatingPointLiterals}
 
-A floating point literal has an integer part, a decimal point, a fraction part and an exponent part. You can represent floating point literals either in decimal form or exponential form.
+A floating point literal has an integer part, a decimal point, a fractional part and an exponent part. You can represent floating point literals either in decimal form or exponential form.
 
 While representing using decimal form, you must include the decimal point, the exponent, or both and while representing using exponential form, you must include the integer part, the fractional part, or both. The signed exponent is introduced by e or E.
 
@@ -999,8 +1089,9 @@ While representing using decimal form, you must include the decimal point, the e
 \fi
 
 \subsection{Boolean Literals}
+\label{sec:BooleanLiterals}
 
-There are two Boolean literals and the are part of standard C++ keywords: \verb+true+ and \verb+false+.
+There are two boolean literals and the are part of standard C++ keywords: \verb+true+ and \verb+false+.
 
 \ifnum\conditionmacro=1
 \begin{TPCpp}
@@ -1015,6 +1106,7 @@ bool = some_integer; //true for some_integer != 0
 The conversion from integer to bool results in \verb+true+ for all nonzero values and in \verb+false+ for zero.
 
 \subsection{Character Literals}
+\label{sec:CharacterLiterals}
 
 Character literals are enclosed in single quotes ('). A character literal can be a plain character ('x'), an escape sequence ('\verb+\t+') or a universal character ('\verb+\u02C0+').
 
@@ -1029,12 +1121,15 @@ Character literals are enclosed in single quotes ('). A character literal can be
 \end{TTable}
 
 \subsection{String Literals}
+\label{sec:StringLiterals}
 
 String literals are enclosed in double quotes. A string contains any combination of plain characters escape sequences and universal characters.
 
 \section{Operators}
+\label{sec:Operators}
 
 \subsection{Arithmetic Operators}
+\label{sec:ArithmeticOperators}
 
 \begin{TTable}{lp{0.8\linewidth}}
 \verb.+.&Adds two operands\\
@@ -1047,16 +1142,18 @@ String literals are enclosed in double quotes. A string contains any combination
 \end{TTable}
 
 \begin{itemize}
-\item Note that the \verb+/+ operator returns a value of the same type as its operators. Thus a division of two integers, known as \textbf{integer division}, returns the rounded result of the division. 
+\item Note that the \verb+/+ operator returns a value of the same type as its operators. Thus a division of two integers, known as \textbf{integer division}, returns the rounded (down) result of the division. 
 \end{itemize}
 
-\subsubsection{Div-Mod identity}
+\subsubsection{Div-Mod Identity}
+\label{sec:DivModIdentity}
 
 \begin{center}
 \verb.a/b * b + a%b == a.
 \end{center}
 
 \subsubsection{Pre- and post-in-/decrement}
+\label{sec:PreAndPostInDecrement}
 
 The operators used for increment and decrement each have two tasks. The can be prefixed and postfixed and depending on this order have different effects. We will explore those effects considering the increment:
 
@@ -1092,6 +1189,7 @@ int operator++(int& a, int i){
 \end{TPCpp}
 
 \subsection{Relational Operators}
+\label{sec:RelationalOperators}
 
 \begin{TTable}{lp{0.8\linewidth}}
 \verb.==.&Checks if the values of two operands are equal or not, if yes then condition becomes true.\\
@@ -1108,10 +1206,11 @@ int operator++(int& a, int i){
 \begin{TTable}{lp{0.8\linewidth}}
 \verb.&&.&Called Logical AND operator. If both the operands are non-zero, then condition becomes true.\\
 \verb.||.&Called Logical OR Operator. If any of the two operands is non-zero, then condition becomes true.\\
-\verb.!.&Called Logical NOT Operator. Use to reverses the logical state of its operand. If a condition is true, then Logical NOT operator will make false.\\
+\verb.!.&Called Logical NOT Operator. Use to reverses the logical state of its operand.\\
 \end{TTable}
 
-\subsubsection{De Morgan's laws}
+\subsubsection{De Morgan's Laws}
+\label{sec:DeMorgansLaws}
 
 \begin{center}
 \begin{tabular}{l}
@@ -1121,6 +1220,7 @@ int operator++(int& a, int i){
 \end{center}
 
 \subsubsection{Application: XOR}
+\label{sec:ApplicationsXOR}
 
 XOR is the exclusive or operation and different descriptions can be derived using De Morgan's laws.
 
@@ -1133,11 +1233,16 @@ XOR is the exclusive or operation and different descriptions can be derived usin
 \end{tabular}
 \end{center}
 
-\subsubsection{Short circuit evaluation}
+\subsubsection{Short Circuit Evaluation}
+\label{sec:ShortCircuitEvaluation}
 
-The logical operators \verb+&&+ and \verb+||+ are left associative, thus evaluate the left operand first. If the result of the evaluation is clear after that, the right side is not evaluated at all. \textbf{Thus the simpler evaluation should always be on the left of the operator.}
+The logical operators \verb+&&+ and \verb+||+ are left associative, thus evaluate the left operand first. If the result of the evaluation is clear after that, the right side is not evaluated at all. 
 
+\textbf{The simpler evaluation should always be on the left of the operator.}
+
+\ifnum\conditionmacro=1
 \subsection{\ntn{Bitwise Operators}}
+\label{sec:BitwiseOperators}
 
 Bitwise operators work on bits and perform bit-by-bit operations. The truth tables for bitwise AND \verb.&., bitwise OR \verb.|. and bitwise exclusive OR (XOR) \verb.^. are:
 
@@ -1157,8 +1262,10 @@ Bitwise operators work on bits and perform bit-by-bit operations. The truth tabl
 \verb.<<.&Binary Left Shift Operator. The left operands value is moved left by the number of bits specified by the right operand.\\
 \verb.>>.&Binary Right Shift Operator. The left operands value is moved right by the number of bits specified by the right operand.\\
 \end{TTable}
+\fi
 
 \subsection{Assignment Operators}
+\label{sec:AssignmentOperators}
 
 \begin{TTable}{lp{0.8\linewidth}}
 \verb.=.&Simple assignment operator, Assigns values from right side operands to left side operand.\\
@@ -1169,7 +1276,9 @@ Bitwise operators work on bits and perform bit-by-bit operations. The truth tabl
 \verb.%=.&Modulus AND assignment operator, It takes modulus using two operands and assign the result to left operand.\\
 \end{TTable}
 
+\ifnum\conditionmacro=1
 \subsection{\ntn{Assignment Operators}}
+\label{sec:AssignmentOperatorsNTN}
 
 \begin{TTable}{lp{0.8\linewidth}}
 \verb.<<=.&Left shift AND assignment operator.\\
@@ -1178,12 +1287,14 @@ Bitwise operators work on bits and perform bit-by-bit operations. The truth tabl
 \verb.^=.&Bitwise exclusive OR and assignment operator.\\
 \verb.|=.&Bitwise inclusive OR and assignment operator.\\
 \end{TTable}
+\fi
 
 \subsection{Misc Operators}
+\label{sec:MiscOperators}
 
 \begin{TTable}{lp{0.8\linewidth}}
-\verb.sizeof.&The sizeof operator returns the size of a variable in bytes. For example, sizeof(a), where ‘a’ is integer, and will return 4.\\
-\verb.?X:Y.&If Condition is true then it returns value of X otherwise returns value of Y.\\
+\verb.sizeof.&The sizeof operator returns the size of a variable in bytes. For example, sizeof(a), where ‘a' is integer, and will return 4.\\
+\verb.?X:Y.&If condition is true then it returns value of X otherwise returns value of Y. Syntax: \verb+<condition>?<then>:<else>+\\
 \verb.,.&The comma operator causes a sequence of operations to be performed. The value of the entire comma expression is the value of the last expression of the comma-separated list.\\
 \verb+.+&The member operator \verb,., accesses a member of the operand on the left as specified by the operator on the right.\\
 \verb.->.&The member operator \verb.->. is used to dereference the operand on the left and access one of its members indicated by the operand on the right.\\
@@ -1192,7 +1303,9 @@ Casts&Casting operators convert one data type to another. For example \verb.int(
 \verb.*.&The dereference operator returns the value the operand points to.\\
 \end{TTable}
 
-\subsection{Operator Precedence and Associativity}
+\newpage
+\subsection{Precedence and Associativity}
+\label{sec:OperatorPrecedenceAndAssociativity}
 
 \begin{TTable*}{|c|lp{0.5\linewidth}|l|}{\small}
 P.&Operator&Description&Associativity\\\hline
@@ -1234,7 +1347,9 @@ P.&Operator&Description&Associativity\\\hline
 \end{TTable*}
 
 \ifnum\conditionmacro=1
+\columnbreak
 \subsubsection{How to use this table}
+\label{sec:HowToUseThisTable}
 
 \begin{TPCpp}
 cout<<a&&b;    //(cout<<a)&&b;
@@ -1257,6 +1372,7 @@ Thus the assignments made in line 5 are in the order of their execution: \verb+c
 \item Operators with the same precedence are evaluated based on their associativity. For left-to-right associative operators as \verb-+- and \verb+-+ the evaluation proceeds from left to right.
 \item \verb.++()., \verb.*(). and \verb+delete+ have the same precedence, and are thus evaluated based on their associativity, which is right-to-left. Therefore \verb.++(). is evaluated after \verb.*(). and \verb+delete+ is evaluated last.
 \end{enumerate}
+\fi
 
 If written badly expression can result in undefined behaviour:
 
@@ -1265,15 +1381,17 @@ f(++i, ++i);
 n = ++i + i;
 b = ++a - a++;
 \end{TPCpp}
-\fi
 
 \textbf{Avoid changing variables which are used again in the same expression.}
 
+\columnbreak
 \section{Conditional Statements}
+\label{sec:ConditionalStatements}
 
 Conditional statements can be used to alter the flow of a program depending on set conditions.
 
 \subsection{if}
+\label{sec:If}
 
 The if command executes a single statement or a collection if a certain condition is evaluated as true.
 
@@ -1287,6 +1405,7 @@ if (condition) {
 \end{TPCpp} 
 
 \subsubsection{if...else}
+\label{sec:IfElse}
 
 The if else command executes statement1 if the condition is met and statement2 otherwise.
 
@@ -1300,6 +1419,7 @@ else {
 \end{TPCpp} 
 
 \subsubsection{if...else if... else}
+\label{sec:IfElseIfElse}
 
 Alternatively multiple conditions can be tested. Note that they are mutually exclusive, thus only the first of the cases, that evaluates as true is executed. The else if can be repeated.
 
@@ -1316,6 +1436,7 @@ else {
 \end{TPCpp}
 
 \subsection{switch}
+\label{sec:Switch}
 
 The switch statement is used to execute statements depending on the value of an expression. In doing so the expression is tested for equality with an integer (or enumeration type).
 
@@ -1337,6 +1458,7 @@ switch (expression) {
 Note that the cases are only executed mutually exclusively if ended with the break command, that exits the switch statement. Otherwise, as in the first case above all consecutive cases after the first met case are executed until break or the end of the switch is encountered. The default case is executed anytime it is reached. In other words, if none of the above cases has been met or if one has been met an no break has been reached. 
 
 \subsection{? : Operator}
+\label{sec:QuestionmarkOperator}
 
 The \verb+? :+ operator can be understood as a short form of an if else command.
 
@@ -1354,8 +1476,10 @@ else {
 The code snippets above accomplish exactly the same.
 
 \section{Loop Types}
+\label{sec:LoopTypes}
 
 \subsection{while}
+\label{sec:While}
 
 The while loop executes a set of statements as long as a set condition is evaluated as true.
 
@@ -1366,6 +1490,7 @@ while (condition) {
 \end{TPCpp}
 
 \subsection{for}
+\label{sec:For}
 
 The for loop not only tests a condition but has additional functionality which is normally used to instantiate a counter variable and increment it. The three together define the loop duration in one line.
 
@@ -1386,6 +1511,7 @@ for (;condition;) {
 Optionally any of the three parts of the loop definition can be omitted. Leaving away the condition results in an infinite loop.
 
 \subsection{do...while}
+\label{sec:DoWhile}
 
 The do while loop executes its first iteration independent of the subsequently tested condition.
 
@@ -1396,6 +1522,7 @@ do {
 \end{TPCpp}
 
 \subsection{break continue}
+\label{sec:BreakContinue}
 
 In all of the loops above the loop control statements can be used to escape the loop (\verb+break+) to continue with the next iteration (\verb+continue+).
 
@@ -1411,23 +1538,28 @@ while(true){
 \end{TPCpp}
 
 \section{Functions}
+\label{sec:Functions}
 
 \subsection{Structure}
+\label{sec:Structure}
 
 \begin{TPCpp}
-return_type function_name (parameter list) {
-	body of the function
+<r_type> <function_name> (<ptype> <pname>) {
+	// body / definition of the function
 }
 \end{TPCpp}
 
 \begin{itemize}
 \item \textbf{Return type: } A function may return a value. The \verb+return_type+ is the data type of that value. If the function should not return a value its \verb+return_type+ is set to \verb+void+.
-\item \textbf{Function Name:} The function name can be any valid cpp identifier and will be used, together with the parameter list to call the function. Together, name and parameter list are called the function signature, which is unique for every function. \textbf{All non-void functions require a return statement!}
+\item \textbf{Function Name:} The function name can be any valid cpp identifier and will be used, together with the parameter list to call the function. Together, name and parameter list are called the function signature, which is unique for every function. 
+
+\textbf{All non-void functions require a return statement!}
 \item \textbf{Parameters:} The parameter variables are place-holders for the values that are passed to the function when it is called. On definition parameters must have type and name. Multiple parameters are separated with a comma. A function may have no parameters in which case a empty set of brackets is appended to the function name.
 \item \textbf{Function Body:} The function body contains a set of statements that define what the function actually does.
 \end{itemize}
 
 \subsubsection{void}
+\label{sec:Void}
 
 \begin{itemize}
 \item \verb+void+ is a fundamental type that has an empty range of values.
@@ -1437,8 +1569,9 @@ return_type function_name (parameter list) {
 \end{itemize}
 
 \subsection{Declaration and Definition}
+\label{sec:DeclarationAndDefinition}
 
-A function declaration informs the compiler that there is a function with a certain signature. The declaration consists of return type, function name and parameter list, which can omit the parameter names if not directly follow by the definition.
+A function declaration informs the compiler that there is a function with a certain signature. The declaration consists of return type, function name and parameter list, which can omit the parameter names if not directly followed by the definition.
 
 \begin{TPCpp}
 return_type function_name ( parameter list );
@@ -1447,7 +1580,7 @@ return_type function_name ( parameter list );
 int max (int, int);
 \end{TPCpp}
 
-From that point on the function can be called within the code as long as it is followed by a proper definition at some point. The definition can follow the declaration directly:
+From that point on the function can be called within the code as long as it has a proper definition at some point. The definition can follow the declaration directly:
 
 \begin{TPCpp}
 int min (int a, int b){
@@ -1455,7 +1588,7 @@ int min (int a, int b){
 }
 \end{TPCpp}
 
-Or come at some later point. Here we define the previously declared max function:
+Or be placed at some other point. Here we define the previously declared max function:
 
 \begin{TPCpp}
 int max (int a, int b){
@@ -1463,11 +1596,13 @@ int max (int a, int b){
 }
 \end{TPCpp}
 
-\subsubsection{return statement}
+\subsubsection{Return Statement}
+\label{sec:ReturnStatement}
 
-The return statement concludes any function. When it is reached the function ends immediately, passing the returned value to the program calling it initially. The value given to the return statement has to match the return type defined in the declaration of the function.
+The return statement concludes any function. When it is reached the function ends immediately, passing the returned value to the program calling it initially. The tpy eof the value given to the return statement has to match the return type defined in the declaration of the function.
 
 \subsection{Calling a function}
+\label{sec:CallingAFunction}
 
 A function is called by directly following the signature in the function declaration. For example the above defined max function can be called as follows:
 
@@ -1480,10 +1615,12 @@ cout<<"The maximum is "<<max(c,d)<<endl;
 Upon this call the values c and d that are passed to the function initialize the two parameters a and b in the body of the function.
 
 \subsection{Function Arguments}
+\label{sec:FunctionArguments}
 
 Depending on the way the parameters are passed to the function it behaves fundamentally different.
 
 \subsubsection{Call by Value}
+\label{sec:CallByValue}
 
 A call by value copies the values handed to the function into the parameters of the function. Therefore changes made to the parameters inside the function do not have an effect on the argument.
 
@@ -1504,7 +1641,7 @@ void change_ref(int & a){
 }
 \end{TPCpp}
 
-When calling the function there is no visible difference to a call by value:
+The call does not differ to a call by value, the reference is made automatically:
 
 \begin{TPCpp}
 int main(){
@@ -1530,9 +1667,12 @@ int main(){
 }
 \end{TPCpp}
 
-\subsubsection{Return by Reference}
+\textbf{Use call by read-only references instead of call by value for large data types to save effort.}
 
-A function can also return a reference. This however is only possible if the function has been called by reference in the first place. \textbf{Use call by read-only references instead of call by value for large data types to save effort.}
+\subsubsection{Return by Reference}
+\label{sec:ReturnByReference}
+
+A function can also return a reference. This however is only possible if the function has been called by reference in the first place. 
 
 \begin{TPCpp}
 int & increment (int & i){
@@ -1557,7 +1697,7 @@ The motivation to return by reference lies in the idea of processing the return 
 
 \vspace{3ex}
 
-In contrast to a return by reference, using references, when using pointers we are not restricted to functions that were called by a variable that exists outside the function scope. It is possible to allocate new memory and return a pointer to that memory.
+In contrast to a return by reference, using references, when using pointers we are not restricted to functions that were called by reference. It is possible to allocate new memory and return a pointer to that memory.
 
 \begin{TPCpp}
 int * make_new_array (int Length){
@@ -1567,7 +1707,9 @@ int * make_new_array (int Length){
 }
 \end{TPCpp}
 
+\ifnum\conditionmacro=1
 \subsubsection{\ntn{Default Values for Parameters}}
+\label{sec:DefaultValuesForParameters}
 
 It is possible to define default values for function parameters. Those will be used when the corresponding argument is left blank when calling the function.
 
@@ -1581,8 +1723,10 @@ void count_to_ten_or_more (int n = 10){
 \end{TPCpp}
 
 With the default value set, the function above can be called as \verb+count_to_ten_or_more();+ which will result in a count to ten, or it can be given any argument of choice.
+\fi
 
 \subsection{Recursion}
+\label{sec:Recursion}
 
 It is possible to define function that call themselves:
 
@@ -1621,7 +1765,8 @@ unsigned int fac (unsigned int n)
 \end{itemize}
 \end{itemize}
 
-\subsubsection{Call stack}
+\subsubsection{Call Stack}
+\label{sec:CallStack}
 
 Recursive functions establish a whole stack of recursive calls until all ends are terminated. This stack can be nicely visualized:
 
@@ -1661,20 +1806,21 @@ An iterative formulation of the above algorithm can also be established and nice
 \begin{TPCpp}
 // POST: return value is the n-th Fibonacci number F(n)
 unsigned int fib2 (const unsigned int n) {
-if (n == 0) return 0;
-if (n <= 2) return 1;
-unsigned int a = 1; // F_1
-unsigned int b = 1; // F_2
-for (unsigned int i = 3; i <= n; ++i) {
-unsigned int a_prev = a; // F_i-2
-a = b; // F_i-1
-b += a_prev; // F_i-1 += F_i-2 -> F_i
-}
-return b;
+	if (n == 0) return 0;
+	if (n <= 2) return 1;
+	unsigned int a = 1; // F_1
+	unsigned int b = 1; // F_2
+	for (unsigned int i = 3; i <= n; ++i) {
+		unsigned int a_prev = a; // F_i-2
+		a = b; // F_i-1
+		b += a_prev; // F_i-1 += F_i-2 -> F_i
+	}
+	return b;
 }
 \end{TPCpp}
 
 \section{Arrays}
+\label{sec:Arrays}
 
 Arrays are used to save a previously known number of data points of the same type.
 
@@ -1732,6 +1878,7 @@ int * dynamic_array = new int [n];
 \end{itemize}
 
 \subsection{Multidimensional Arrays}
+\label{sec:MultidimensionalArrays}
 
 Arrays can have more than one dimension, and can thus also be used to represent matrices or tables. 
 
@@ -1754,7 +1901,8 @@ The array above is saved in the memory as seen below:
 
 \includegraphics[width=\linewidth]{Pictures/2DArray}
 
-\subsection{Passing arrays as arguments}
+\subsection{Passing Arrays as Arguments}
+\label{sec:PassingArraysAsArguments}
 
 Since we know that arrays are basically pointers to memory it is possible to pass an array to the function by simple giving it a pointer to the first element of the array. Using references however we can prevent the decaying of the array-name (which remembers the length of the array if defined statically) by passing a reference to the array name as follows:
 
@@ -1771,6 +1919,7 @@ void nice_array_function(int (&arrayname) [10]{
 The first function will accept any pointer and will not preserve the knowledge of the length of the array. The second function is able to determine whether the argument is actually an array of the specified length and will preserve this information, but has the drawback that it only works for that specific length.
 
 \section{vector}
+\label{sec:vector}
 
 The vector class is a member of the standard library and improves on many of the issues observed with arrays. Vectors are implemented as a template and thus need a type specification in angled brackets.
 
@@ -1797,7 +1946,70 @@ copy.push_back(true); // append entry: true
 copy.pop_back(); //delete last element
 \end{TPCpp}
 
-\subsection{Multidimensional vectors}
+There also exists the possibility of filling up a vector with a certain value, over a certain interval, defined by two iterators.
+
+\begin{TPCpp}
+#include <algorithm>
+
+/*
+std::fill(b,p,val) //where b,p are iterators
+*/
+
+std::vector<int> vec (5,4);            // vec: 4 4 4 4 4
+std::fill(vec.begin()+3, vec.end(),2); // vec: 4 4 4 2 2
+\end{TPCpp}
+
+Another member function can find elements with a certain value within a vector and return an iterator to the first instance found. If nothing is found a past-the-end iterator (with respect to the defined interval) is returned.
+
+\begin{TPCpp}
+#include <algorithm>
+
+/*
+std::find(b,p,val) // where b,p are iterators
+*/
+
+using It =std::vector<int>::iterator;
+std::vector<int> vec = {8, 1, 0, -7, 7};
+// Goal: Find index of -7 in vec: 8 1 0 -7 7
+It pos itr = std::find(vec.begin(), vec.end(), -7);
+std::cout << (pos itr - vec.begin()) << "\n"; // Output: 3
+\end{TPCpp}
+
+Is is even possible to sort vectors from low to high.
+
+\begin{TPCpp}
+#include <algorithm>
+
+/*
+std::sort(b,e) //where b,e are iterators
+*/
+
+std::vector<int> vec = {8, 1, 0, -7, 7};
+std::sort(vec.begin(), vec.end()); // vec: -7 0 1 7 8
+\end{TPCpp}
+
+And we can find the minimum element of vector easily using:
+
+\begin{TPCpp}
+#include <algorithm>
+
+/*
+std::min element(b, p) // where b,p are iterators
+*/
+
+// Goal: Make sure that all inputs are > 0
+std::vector<int> vec;
+int i;
+while (std::cin >> i)
+vec.push back(i);
+assert( *std::min element(vec.begin(), vec.end()) > 0 );
+// Note: We have to dereference the (r-value-)iterator.
+\end{TPCpp}
+
+Note that all the algorithms used above are made for use with the standard template libraries and thus work for other data structures in that library. Also this has only been a small selection of the available functions. See section \ref{sec:StandardTemplateLibrary} for additional information.
+
+\subsection{Multidimensional Vectors}
+\label{sec:MultidimensionalVectors}
 
 Multidimensional vectors are similar to multidimensional arrays in functionality. The declaration is a bit more complicated:
 
@@ -1806,9 +2018,10 @@ using namespace std;
 vector < vector < int > > a (n, vector<int>(m));
 \end{TPCpp}
 
-The above declaration describes a vector of int vectors. The initialization defines the dimensions as follows: The outer vector is of length n and contains vectors of lengths m.
+The above declaration describes a vector of int vectors. The initialization defines the dimensions as follows: The outer vector is of length n and contains vectors of lengths m. Note that the space between \verb>< <> is necessary, since without it the brackets would be interpreted as an operator.
 
 \subsection{Access}
+\label{sec:Access}
 
 There exist different methods of accessing the elements of vectors.
 
@@ -1839,6 +2052,7 @@ for (int* p = a; p < a+5; ++P)
 \end{enumerate}
 
 \subsection{Iterators}
+\label{sec:Iterators}
 
 Since vectors allocate memory differently than arrays they cannot simply be traversed using a pointer. For that reason and to have an interface for advanced functionality vectors have iterators pointing to their elements.
 
@@ -1864,7 +2078,8 @@ while(it<vec.end()) {
 
 In the above example the member functions \verb+begin()+ and \verb+end()+ are used to initialize and constrain an iterator going through the vector. Access to pointed-to elements and increment of the iterator works just like it does using pointers.
 
-\subsection{Passing vectors to functions}
+\subsection{Passing Vectors to Functions}
+\label{sec:PassingVectorsToFunctions}
 
 By convention of the standard library vectors are passed to functions using two iterators, one to the beginning of a valid part of the vector to be passed and  a second to the ending of the same. This can of course include the whole vector but includes the flexibility of only processing a part of it.
 
@@ -1874,8 +2089,10 @@ std::fill(d.begin(),d.end(),1);
 \end{TPCpp}
 
 \section{Strings}
+\label{sec:Strings}
 
-\subsection{C-style character string}
+\subsection{C-style Character String}
+\label{sec:CStyleCharacterString}
 
 One possibility to save a string is using an array of chars. By convention character arrays are terminated with \verb+\0+. This serves the purpose of marking the end of a string.
 
@@ -1887,6 +2104,7 @@ char text = {'b','o','o','l','\0'};
 \end{TPCpp}
 
 \subsection{string}
+\label{sec:string}
 
 The modern alternative to char arrays is the \easyurl{string class}{http://www.cplusplus.com/reference/string/string/} in the standard library. It serves the same purpose as the character array but makes handling strings a lot easier. For instance the length of a string does not have to be known at compiletime and can thus also change during runtime.
 
@@ -1903,6 +2121,7 @@ text1 == text2;
 \end{TPCpp}
 
 \section{Pointers}
+\label{sec:Pointers}
 
 Pointers are variables saving addresses of other variables.
 
@@ -1943,7 +2162,8 @@ pointer = & var;
 \end{TPCpp}
 \end{itemize}
 
-\subsection{Pointer arithmetic}
+\subsection{Pointer Arithmetic}
+\label{sec:PointerArithmetic}
 
 In connection with arrays there are more operations possible:
 
@@ -2003,12 +2223,14 @@ What happens internally is that the length of the data element pointed to is kno
 
 
 \subsection{Additional Information}
+\label{sec:AdditionalInformation}
 
-Also see section  \ref{sec:ArraysAndPointers} for the connection between pointers and arrays as well as \ref{sec:CallByReference} to see how pointers can be used to implement call by reference.
+Also see section \ref{sec:ArraysAndPointers} for the connection between pointers and arrays, as well as \ref{sec:CallByReference} to see how pointers can be used to implement call by reference.
 
 Also consider the additional \easyurl{information}{https://www.tutorialspoint.com/cplusplus/cpp_pointers.htm} explaining many advanced uses of pointers.
 
-\subsection{Differences between Pointers and References}
+\subsection{Differences Between Pointers And References}
+\label{sec:DifferenceBetweenPointersAndReferences}
 
 \begin{itemize}
 \item A pointer can change where it points to.
@@ -2020,6 +2242,7 @@ Also consider the additional \easyurl{information}{https://www.tutorialspoint.co
 \textbf{A reference can be understood as a constant pointer that does not need to be dereferenced.}
 
 \section{References}
+\label{sec:References}
 
 A reference is another name for an already existing variable. It has to be initialized when declared and cannot refer to another variable afterwards. \textbf{The object referred to has to exist at least as long as its reference!}
 
@@ -2029,14 +2252,18 @@ int & ref_to_i = i;
 // int & ref_to_nothing; //not allowed!
 \end{TPCpp}
 
-In c++ a reference declaration consists of the type which is to referred to, the \verb+&+ operator and the name of the reference, followed by an assignment of a valid L-value. After initialisation \verb+ref_to_i+ can be used exactly the same as \verb+i+!
+In c++ a reference declaration consists of the type which is to referred to, the \verb+operator&+ and the name of the reference, followed by an assignment of a valid L-value. After initialisation \verb+ref_to_i+ can be used exactly the same as \verb+i+!
+
+\vspace{3ex}
+
+Only \verb+const+ references are allowed to refer to R-values!
 
 \begin{TPCpp}
 //int & h = 3; // not allowed!
 const int & i = 7;
 \end{TPCpp}
 
-Only \verb+const+ references are allowed to point to R-values!
+Only \verb+const+ references can refer to constant variables.
 
 \begin{TPCpp}
 const int n = 5;
@@ -2044,9 +2271,8 @@ const int n = 5;
 const int & i = n; // allowed, read only
 \end{TPCpp}
 
-Only \verb+const+ references can refer to constant variables.
-
 \section{Input/Output}
+\label{sec:InputOutput}
 
 C++ I/O occurs in streams, which are sequences of bytes. When bytes flow from a device like a keyboard, a disk drive or a file to main memory this is called an input operation. If bytes flow the other direction, which means from the program to a device like a display screen or a file this is called an output operation.
 
@@ -2060,9 +2286,12 @@ This file defines \verb+cin, cout, cerr+ and \verb+clog+, which correspond to th
 \item \verb+fstream+
 
 This file declares services for user-controlled file processing.
+
+\item \verb+sstream+
 \end{itemize}
 
 \subsection{cout and cin}
+\label{sec:CoutAndCin}
 
 \begin{TPCpp}
 #include <iostream>
@@ -2083,7 +2312,7 @@ int main(){
 These two streams can also be handed to functions which further allows overloading of \verb+<<+ and \verb+>>+, such that for example more elaborate classes can be handed to \verb+cout+ directly. In the example below a suitable overload for a class implementing rational numbers is made:
 
 \begin{TPCpp}
-//Stream operators
+//Stream operator
 //PRE: Takes a ostream as an argument
 //POST: Prints to the handed ostream
 std::ostream& operator<<(std::ostream& os, const Rational & rational)
@@ -2093,15 +2322,17 @@ std::ostream& operator<<(std::ostream& os, const Rational & rational)
 }
 \end{TPCpp}
 
-It is important to notice that the standard input stream and the standard output stream are unique objects that cannot be copied! For that reason when handed to an operator as seen above they are handed as references!
+It is important to notice that \textbf{the standard input stream and the standard output stream are unique objects that cannot be copied}! For that reason when handed to an operator as seen above they are handed as references! For an explanation why this operator returns a reference, see section \ref{sec:ChainedOperators}.
 
 \subsection{ifstream and ofstream}
+\label{sec:IfstreamAndOfstream}
 
 These two streams allow reading from a file (\verb+ifstream+) and writing to a file (\verb+ofstream+).
 
 In the subsequent subsections we will build up all the code needed for the above described operations. All snippets contribute to the same program and can be run as a whole.
 
-\subsubsection{opening a file}
+\subsubsection{Opening a File}
+\label{sec:OpeningAFile}
 
 First we open a file in the desired mode using the \verb+fstream+ member \verb+open()+ Selectable file modes are:
 
@@ -2136,7 +2367,8 @@ int main(){
 	infile.open("file_name.txt", ios::in);
 \end{TPCpp}
 
-\subsubsection{Reading from a file}
+\subsubsection{Reading From a File}
+\label{sec:ReadingFromAFile}
 
 After having set up the ifstream we can use it just like \verb+cin+ to read information from the file to main memory:
 
@@ -2153,7 +2385,8 @@ After having set up the ifstream we can use it just like \verb+cin+ to read info
 	}
 \end{TPCpp}
 
-\subsubsection{Closing a file}
+\subsubsection{Closing a File}
+\label{sec:ClosingAFile}
 
 After reading the file we will close it since it is of no further use.
 
@@ -2161,14 +2394,16 @@ After reading the file we will close it since it is of no further use.
 	infile.close();
 \end{TPCpp}
 
-\subsubsection{Writing to a file}
+\subsubsection{Writing to a File}
+\label{sec:WritingToAFile}
 
 Now we'd like to write our read and processed file content to another file. First we open a file.
 
 \begin{TPCpp}
 	//Declare instance of ofstream
 	ofstream outfile;
-	//Open a file 	outfile.open("new_textfile.txt",ios::out)
+	//Open a file
+	outfile.open("new_textfile.txt",ios::out);
 \end{TPCpp}
 
 The we use \verb+outfile+ to write to a new file.
@@ -2192,7 +2427,99 @@ After that the file is closed.
 }
 \end{TPCpp}
 
+\subsection{sstream}
+\label{sec:sstream}
+
+String-Stream is a stream class that can handle strings. Same as the standard in-/out-streams instances of sstream cannot be copied and should be handed by reference. An exemplary use would be emulating cin-input:
+
+\begin{TPCpp}
+char c;
+std::cin >> c; // e.g. value: 'b'
+// stringstream with value "b345e"
+std::stringstream s ("b345e"); 
+// c gets value 'b' and s is now "345e"
+s >> c;
+// c gets value '3' (!as char! since type of c is char)
+s >> c;
+int n;
+// n gets value 45 (!as int! since type of n is int)
+s >> n;
+// (This works since the computer sees that the next
+// 2 characters in the string "45e", namely '4' and '5',
+// can be used as the int 45. So after this operation
+// s is "e".)
+\end{TPCpp}
+
+\subsection{Functionality of Streams}
+\label{sec:FunctionalityOfStreams}
+
+A stream can have different statuses and there are functions to check the status of a stream:
+
+\begin{TPCpp}
+/*
+//true if the end of file has been reached
+my_stream.eof()
+*/
+
+std::stringstream b ("33");
+int z;
+b >> z; std::cout << b.eof(); 
+// true (>> read 33 and reached end of b)
+\end{TPCpp}
+
+\begin{TPCpp}
+/*
+//true if an invalid character has been read
+my_stream.fail()
+*/
+
+std::stringstream b ("33a");
+int z;
+// false (>> read 33)
+b >> z; std::cout << b.fail(); 
+// true (>> ought to read 'a'
+b >> z; std::cout << b.fail(); 
+// which is not an int.)
+\end{TPCpp}
+
+\begin{TPCpp}
+/*
+//return the next character converted to int
+//without extracting it from the stream
+my_stream.peek()
+*/
+
+std::stringstream num ("3 a");
+// Output: 51 and NOT '3'
+std::cout << num.peek() << "\n"; 
+num >> c;
+std::cout << c << "\n"; // Output: '3'
+char next = num.peek();
+std::cout << next << "\n"; // Output: ' '
+num >> c;
+std::cout << c << "\n"; // Output: 'a'
+\end{TPCpp}
+
+\begin{TPCpp}
+/*
+std::ws //extract whitespaces until next character
+std::noskipws //prevent auto-ignoring of whitespaces
+*/
+
+char c;
+std::stringstream t ("d a\n\nb");
+t >> std::noskipws; // Do not ignore whitespaces.
+// Output t without whitespaces
+t >> c; std::cout << c; // Output: 'd'
+t >> std::ws; // Remove: " "
+t >> c; std::cout << c; // Output: 'a'
+t >> std::ws; // Remove: "\n\n"
+t >> c; std::cout << c; // Output: 'b'
+// Output in total: dab
+\end{TPCpp}
+
 \section{struct}
+\label{sec:struct}
 
 Struct allows the definition of new custom data types.
 
@@ -2217,9 +2544,9 @@ rational b;
 
 \begin{itemize}
 \item Now the new type \verb+rational+ is defined.
-\item It can be directly instantiated by inserting one or several valid identifiers at the end of the struct definition. In this case we made instance \verb+a+.
+\item It can be directly instantiated by inserting one or several (separated with comma) valid identifiers at the end of the struct definition. In this case we made instance \verb+a+.
 \item When making new instances afterwards we can use the name of the new type just as we use the basic types.
-\item Member variables can be of basic type as well as of custom type.
+\item Member variables can be of basic type as well as of custom type, i.e. structures can be nested.
 \item Member types can be combined in any way desired.
 \end{itemize}
 
@@ -2239,6 +2566,7 @@ rational u = t;
 Note that for custom data types not all operators work out of the box. This leads to the idea of overloading operators, as described in section \ref{sec:OperatorOverloading}.
 
 \section{class}
+\label{sec:class}
 
 Classes empower the concept of data encapsulation in c++. They are a variant of structs and as such can have member variables as well as member functions. 
 
@@ -2246,7 +2574,8 @@ Classes empower the concept of data encapsulation in c++. They are a variant of 
 
 Note that structs basically have the same functionality as classes. They are introduced differently for didactic reasons but actually the single difference between the two is that the members of a struct are public by default and the members of a class a private by default.
 
-\subsection{Object oriented programming}
+\subsection{Object Oriented Programming}
+\label{sec:ObjectOrientedProgramming}
 
 The basic idea of object oriented programming is to build software such that it models reality. For that reason the desired functionality is embedded into a set of objects interacting with one another to solve a set task. With object oriented programming come two main advantages:
 
@@ -2256,6 +2585,7 @@ The basic idea of object oriented programming is to build software such that it 
 \end{itemize}
 
 \subsection{Basics}
+\label{sec:Basics}
 
 \begin{itemize}
 \item \textbf{Class:} The definition of an object, introducing a new data type.
@@ -2263,6 +2593,7 @@ The basic idea of object oriented programming is to build software such that it 
 \end{itemize}
 
 \subsection{Class Members}
+\label{sec:ClassMembers}
 
 There are two types of class members: \textbf{member functions} and \textbf{member variables}. Member variables are data points within the class. Member functions can access these data points for processing. The members of a class exist in instances of the class.
 
@@ -2291,7 +2622,42 @@ int main(){
 
 Alternatively the class name can be used as a type specifier, for introducing a new instance.
 
+\subsubsection{Member Functions}
+\label{sec:MemberFunctions}
+
+The declaration of a member function always has to take place within the class definition. However it is possible to separate declaration and definition and thus the definition can be placed outside the class definition.
+
+\begin{TPCpp}
+class Vector {
+public:
+	void print();
+	void explode(){
+		cout<<"BOOM!"<<endl;
+	}
+};
+
+Vector::print(){
+	cout<<"Don't mind me, I'm just printing."<<endl;
+}
+\end{TPCpp}
+
+The external definition needs to know that is is a member function of the class. This is done using \verb1Vector::1.
+
+\vspace{3ex}
+
+Note that member functions can be declared const, which means that they cannot change any of the members unless they are mutable (see section \ref{sec:StorageClasses}).
+
+\begin{TPCpp}
+class Vector {
+public:
+	void doNothing() const { //nothing }
+};
+\end{TPCpp}
+
+The const after the parameter list of the function is refering to the implicit \verb+*this+ argument (see section \ref{sec:ThisPointer})  which is accessed by every member function of class.
+
 \subsection{Class Access Modifiers}
+\label{sec:ClassAccessModifiers}
 
 Class members, not yet considering inheritance, can be either private or public.
 
@@ -2313,7 +2679,8 @@ public:
 };
 \end{TPCpp}
 
-\subsubsection{Access methods}
+\subsubsection{Access Methods}
+\label{sec:AccessMethods}
 
 In order to define an interface to the hidden data one often defines get- and set-functions:
 
@@ -2326,7 +2693,8 @@ In order to define an interface to the hidden data one often defines get- and se
 	void set_y(const double _y) {y = _y;}
 \end{TPCpp}
 
-\subsubsection{Access operators}
+\subsubsection{Access Operators}
+\label{sec:AccessOperators}
 
 When accessing the members of a class not from within the class but from the outside, through an instance, there exist two operators managing access to public members:
 
@@ -2345,9 +2713,10 @@ pointer->set_x(7);
 
 The \verb+operator.+ is used in connection with an instance of a class. It directly accesses the appended member. The \verb+operator->+ is used for accessing the members of an instance through a pointer. In addition to member access it dereferences the pointer.
 
-\subsubsection{This pointer}
+\subsubsection{This Pointer}
+\label{sec:ThisPointer}
 
-Sometimes it is useful to have access on the instance of a class as an object, not only on its members. In that case the \verb+this+ pointer comes in handy. It is a pointer saving the address of the instance it is used in. Thus the above defined access methods could also look like this:
+Sometimes it is useful to have access to the instance of a class as an object, not only to its members. In that case the \verb+this+ pointer comes in handy. It is a pointer saving the address of the instance it is used in. Thus the above defined access methods could also look like this:
 
 \begin{TPCpp}
 void get_x() const {return this->x;}
@@ -2355,6 +2724,7 @@ void get_y() const {return (*this).y;}
 \end{TPCpp}
 
 \subsection{Constructors}
+\label{sec:Constructors}
 
 \begin{itemize}
 \item Standard member function, exists in default form if not overwritten.
@@ -2380,16 +2750,17 @@ public:
 }
 \end{TPCpp}
 
-The above implementation of the constructor overload makes use of the so called \textbf{initializer list} which is a list of member variables and in brackets there respective value. This comes in especially handy if a class has const members that cannot be initialized within the function body.
+The above implementation of the constructor overload makes use of the so called \textbf{initializer list} which is a list of member variables and their respective value in brackets. This comes in especially handy if a class has const members that cannot be initialized within the function body.
 
 \subsubsection{Copy Constructor}
+\label{sec:CopyConstructor}
 
 The copy constructor is used for:
 
 \begin{itemize}
 \item Initializing one object from another of the same type.
 \item Copying an object to pass it as an argument to a function.
-\item copy an object to return it from a function.
+\item Copying an object to return it from a function.
 \end{itemize}
 
 The default copy constructor simply sets the member variables of the target equal with those of the source. This is not sufficient if a class has dynamic memory allocated.
@@ -2408,10 +2779,11 @@ Vector (const Vector& obj){
 \end{TPCpp}
 
 \subsection{Destructor}
+\label{sec:Destructor}
 
 \begin{itemize}
 \item Standard member function, exists in default form if not overwritten.
-\item Used to deallocate memory taken by an instance upon its deletion.
+\item Used to deallocate memory taken by an instance.
 \item Is called whenever an instance is explicitly deleted or reaches end of scope.
 \item The destructor only needs to be overwritten in case the class allocates dynamic memory.
 \end{itemize}
@@ -2432,8 +2804,9 @@ Vector (const Vector& obj){
 For the lack of dynamically allocated memory the default constructor of Vector has been overloaded with this simple output, an easy way to see when the destructor is called.
 
 \subsection{friend}
+\label{sec:friend}
 
-To allow non-member function full access to the private variables of a class, friend functions can be defined as follows:
+To allow a non-member function full access to the private variables of a class, friend functions can be defined as follows:
 
 \begin{TPCpp}
 //outside class
@@ -2447,6 +2820,7 @@ friend void foreign_print(Vector obj);
 \end{TPCpp}
 
 \subsection{Static Members}
+\label{sec:StaticMembers}
 
 A static member of a class exists only once, independent of how many instances of that class are around. All instances work with one and the same static variable.
 
@@ -2454,19 +2828,346 @@ A static member of a class exists only once, independent of how many instances o
 static <member_type> <member_name>;
 \end{TPCpp}
 
+\section{Dynamic Data Structures}
+\label{sec:DynamicDataStructures}
+
+
+To illustrate the consequences of dynamic memory allocation in a custom data type, the example of a stack is shortly covered.
+
+\subsection{Linked List}
+\label{sec:LinkedList}
+
+The idea of a linked list is to enhance the capability of a simple array with more flexibility. We want to have the freedom to:
+
+\begin{itemize}
+\item Insert/Append data points
+\item Remove data points
+\end{itemize}
+
+This is achieved using so called linked lists, which in their simplest form are based on the following struct, in this case built for integer data points.
+
+\begin{TPCpp}
+struct node {
+	int datum;
+	node * next;
+}
+\end{TPCpp}
+
+Now the idea of a linked list:
+
+\begin{enumerate}
+\item Start the list with your first data point. Let its member \verb+next+ point to \verb+NULL+. This is the end of our list.
+\item Append a new data point by allocating it dynamically and setting its \verb+next+ pointer to the address of the old starting point of our list.
+\item Always save a pointer to the start of the list. This is all the information needed to access all points in the list.
+\item Traverse through the list by subsequently accessing the \verb+next+ pointers.
+\end{enumerate}
+
+This is the idea of a singly linked list (linked in one direction) that can be used to implement a stack. The concept however allows \easyurl{much more}{https://www.geeksforgeeks.org/data-structures/linked-list/}.
+
+\subsection{Stack}
+\label{sec:Stack}
+
+The stack is a so called FIFO (First in first out) data structure. It can be associated with a stack of bricks. The one laid on top has to be removed again first.
+
+\begin{TPCpp}
+class stack {
+public:
+	void push (int value);
+	int pop ();
+	void print();
+private:
+	node* top_node;
+}
+\end{TPCpp}
+
+Our stack can now be used as follows:
+
+\begin{TPCpp}
+stack s1;
+s1.push(1);
+s1.push(3);
+s1.push(2);
+\end{TPCpp}
+
+\subsection{Copy Constructor}
+\label{sec:CopyContstructorDynamic}
+
+Now if we use the standard copy constructor for our stack, our only member variable is copied, such that now we have two stacks using the same set of nodes:
+
+\begin{TPCpp}
+stack s2(s1);
+\end{TPCpp}
+
+\includegraphics[width=\linewidth]{Pictures/Stack1}
+
+The issue is that if now \verb+s1+ pops one of the nodes \verb+s2+ will be pointing to a now inexistent node. In other words the two stacks are not independent. To resolve this the copy constructor is overwritten as follows:
+
+\begin{TPCpp}
+stack::stack(const stack& s) : top_node (0) {
+	copy(s.top_node, top_node);
+}
+
+void stack::copy(const node* from, node*& to) {
+	assert (to == 0);
+	if (from != 0) {
+		to = new node(from->datum);
+		copy(from->next, to->next);
+	}
+}
+\end{TPCpp}
+
+\subsection{Assignment operator}
+\label{sec:AssignmentOperatorDynamic}
+
+Now assume we'd like to assign one stack to another:
+
+\begin{TPCpp}
+stack s2;
+s2.push(4);
+s2.push(9);
+s2 = s1;
+\end{TPCpp}
+
+\includegraphics[width=\linewidth]{Stack2}
+
+The problems arising here are:
+
+\begin{itemize}
+\item We have two non-independent stacks againg.
+\item The nodes 9 and 4 of former \verb+s2+ are memory leaks.
+\end{itemize}
+
+To solve this the assignment operator is overloaded. First we need a function cleaning up memory leaks:
+
+\begin{TPCpp}
+void stack::clear(node* from) {
+	if (from != 0) {
+		clear (from->next);
+		delete from;
+	}
+}
+\end{TPCpp}
+
+\begin{TPCpp}
+stack& stack::operator= (const stack& s) {
+	if (top_node != s.top_node) { // test for self-assignment
+		clear(top_node);
+		top_node = 0; // fix dangling pointer
+		copy(s.top_node, top_node);
+	}
+	return *this;
+}
+
+\end{TPCpp}
+
+\subsection{Destructor}
+\label{sec:DestructorDynamic}
+
+The final issue that needs to be addressed is the case when a stack is at the end of its scope and thus deleted. The standard destructor will just delete all member variables, and thus not clean up our dynamically allocated nodes. To solve this the destructor is overwritten as well:
+
+\begin{TPCpp}
+stack::~stack() {
+	clear(top_node);
+}
+\end{TPCpp}
+
+\subsection{Rule of three}
+\label{sec:RuleOfThree}
+
+\textbf{If a class defines one or more of the following it should probably define all of them:}
+
+\begin{itemize}
+\item destructor
+\item copy constructor
+\item copy assignment operator
+\end{itemize}
+
+All three functions above are compiler generated, thus exist automatically in their naïve default version. If one of them has been overwritten it means that the compiler made version does not suit the need of the underlying class. Thus it is very likely that the other two are not suitable as well.
+
 \section{Inheritance}
+\label{sec:Inheritance}
+
+The concept of inheritance allows building a class upon another, such that the basis inherits all its members to a derived class. This allows reusing code and reduces the amount of code written if multiple similar objects are needed. Further, if the basic traits of a family of objects need to be changed, if implemented correctly only the base class needs to be adapted.
+
+\begin{TPCpp}
+class A{	//base class
+	//... 
+};
+
+//derived class
+class B : public A {
+	//...
+};
+\end{TPCpp}
 
 \subsection{Access Control and Inheritance}
+\label{sec:AccessControlAndInheritance}
+
+As classes have members with different access specifications there needs to be a way to define which member is available in what way in a derived class. This is done with the table below. The access specifier of the inherited member is on the horizontal direction. The type of inheritance is on the vertical direction.
+
+\begin{center}
+\begin{tabular}{|l|lll|}
+\hline
+Inheritance \verb+\+ Member & \verb+public+ & \verb+protected+ & \verb+private+\\\hline
+\verb+public+&\verb+public+&\verb+protected+&n/a\\
+\verb+protected+&\verb+protected+&\verb+protected+&n/a\\
+\verb+private+&\verb+private+&\verb+private+&n/a\\\hline
+\end{tabular}
+\end{center}
+
+The type of inheritance is incorporated in the definition of the derived class as follows:
+
+\begin{TPCpp}
+class base {
+private:
+	int pr_member;
+public:
+	int pu_member;
+};
+
+/*
+class <derived_name> : <access modifier> <base_name> {
+	//...
+};
+*/
+
+class derived : private base {
+	// pr_member not available
+	// pu_member available as private
+};
+\end{TPCpp}
+
+\subsection{Constructors}
+\label{sec:ConstructorsInheritance}
+
+Since private member variables are not accessible in derived classes, they need to be initialized differently:
+
+\begin{TPCpp}
+class base{
+	int Bvar;
+public:
+	base(int _Bvar) : Bvar(_Bvar){}
+};
+
+class deri = public base {
+	int Dvar;
+public:
+	deri(int _Bvar, int _Dvar) : base(_Bvar), Dvar(_Dvar) {}
+};
+\end{TPCpp}
+
+\subsection{is a - has a}
+\label{sec:IsAHasA}
+
+Classes can inherit from each other or they can contain each other as member variables.
+
+\begin{TPCpp}
+class University {
+private:
+	std::vector<Student> students_;
+};
+
+class Student {
+private:
+	Legi legi_;
+};
+
+class Phys_Student : public Student {};
+
+class Legi {
+	int immatriculation_year_;
+};
+\end{TPCpp}
+
+The above set of classes show the difference. A university \textbf{has} students. A physics student \textbf{is} a student. In implementation both versions can be used and yield very similar results. The decision which to choose is often based on the reality that is to be represented.
 
 \subsection{Polymorphism}
+\label{sec:Polymorphism}
+
+Polymorphism is a concept based on the possibility to let pointers of the type of the base class point to derived classes.
+
+\begin{TPCpp}
+class base {
+	//...
+};
+
+class derived : public base {
+	//...
+};
+
+derived derived_instance;
+base * pointer = &derived_instance;
+\end{TPCpp}
+
+When now this pointer is used to call a member function defined in the base class and overwritten in the derived class, the decision which version to use needs to be made. Normally the member function, that is associated with the type of the pointer (thus base class) will be executed.
+
+\subsubsection{virtual}
+\label{sec:virtual}
+
+This behaviour can be changed when a function is declared as virtual in the base class. Then a pointer of the base class, pointing to a derived class, will use the function definition within the derived class. This is called \textbf{dynamic binding}.
+
+\begin{TPCpp}
+class A {
+	virtual void print() 
+	{cout<<"A"<<endl;}
+};
+
+class B : public A {
+	void print()
+	{cout<<"B"<<endl;}
+};
+
+A instantce1;
+instance1.print(); // "A"
+B instance2;
+instance2.print(); // "B"
+A * pointer1 = &instance2;
+pointer1->print(); // "B"
+\end{TPCpp}
+
+This behaviour can be summed up as follows:
+
+\begin{enumerate}
+\item When called directly, via an instance of a class, the member function corresponding to the type of the calling instance is used.
+\item When a non-virtual member function is called indirectly, via a pointer to an instance, the function corresponding to the type of the calling pointer is used.
+\item When a virtual member function is called indirectly, via a pointer an instance, the function corresponding to the type of the calling instance is used.
+\end{enumerate}
+
+\ifnum\conditionmacro=1
+\subsubsection{\ntn{Abstract Base Class}}
+\label{sec:AbstractBaseClass}
+
+Normally functions need to be defined at some point. For virtual functions however it is possible to omit the definition entirely, setting them to zero.
+
+\begin{TPCpp}
+class base  {
+	virtual void print() = 0;
+}
+\end{TPCpp}
+
+Now since this function is undefined to this point, the base class holding it can not be instantiated. Further this class is now called \textbf{abstract base class} since it holds a \textbf{pure virtual function}.
+
+\begin{TPCpp}
+class derived : public base {
+	void print() {
+		cout<<"derived"<<endl;
+	}
+};
+
+//base instance1; //forbidden
+base * pointer1 = new derived; //allowed
+\end{TPCpp}
+\fi
 
 \section{Overloading}
+\label{sec:Overloading}
 
 Functions and operators can work differently, depending on their arguments or operands.
 
-\subsection{Function overloading}
+\subsection{Function Overloading}
+\label{sec:FunctionOverloading}
 
-For functions overloading means varying the types, the order and the number of arguments given to the function. For each variation a different behaviour can be programmed. Upon call the handed arguments are compared with the overload signatures and the matching function is executed. If no matching function is found \easyurl{overload resolution rules}{https://en.cppreference.com/w/cpp/language/overload_resolution} are applied.
+Functions overloading means varying the types, the order and the number of arguments given to the function. For each variation a different behaviour can be programmed. Upon call the handed arguments are compared with the overload signatures and the matching function is executed. If no matching function is found \easyurl{overload resolution rules}{https://en.cppreference.com/w/cpp/language/overload_resolution} are applied.
 
 \begin{TPCpp}
 //a way of identifying unknown variable types:
@@ -2526,19 +3227,19 @@ struct rational{
 The overloading of the binary operator, taking the value on its left and the value on its right:
 
 \begin{TPCpp}
-rational operator- (const rational& a, const rational& b){
+rational operator- (const rational& l, const rational& r){
 	rational result;
-	result.n = a.n*b.d - a.d*b.n;
-	result.d = a.d*b.d;
+	result.n = l.n*b.r - l.d*r.n;
+	result.d = l.d*b.r;
 	return result;
 }
 \end{TPCpp}
 
-The overloading of the unary operator, taking the value on its right. 
+The overloading of the unary \verb1operator-1, taking the value on its right. 
 
 \begin{TPCpp}
-rational operator- (const rational& a){
-    rational result = a;
+rational operator- (const rational& r){
+    rational result = r;
 	result.n = -result.n;
 	return result;
 }
@@ -2559,7 +3260,8 @@ int main(){
 }
 \end{TPCpp}
 
-\subsubsection{Overloadable operators}
+\subsubsection{Overloadable Operators}
+\label{sec:OverloadableOperators}
 
 \begin{TTable}{*{6}{p{0.1\linewidth}}}
 \verb-+-&\verb+-+&\verb+*+&\verb+/+&\verb+%+&\verb+^+\\
@@ -2580,6 +3282,7 @@ Note that there are certain operators that cannot be overloaded:
 Find examples for the overloading of any of the operator types listed above \easyurl{here}{https://www.tutorialspoint.com/cplusplus/cpp_overloading.htm}
 
 \subsubsection{Chained operators}
+\label{sec:ChainedOperators}
 
 Certain operators allow to be chained together. Good examples are the assignment operator or the I/O operators \verb+<<+ and \verb+>>+. To preserve the ability to be put in chains, these operators need to return references. Why this is necessary will become obvious in the following example:
 
@@ -2600,14 +3303,101 @@ std::ostream& operator<< (std:ostream& out, rational r){
 \end{TPCpp}
 
 \section{Dynamic Memory}
+\label{sec:DynamicMemory}
+
+Normally memory is allocated according to the variables specified, before program execution. However it is often practical to allocate memory during runtime.
+
+\begin{itemize}
+\item Every \verb+new+ needs a fitting \verb+delete+.
+\item Not cleaning up leads to memory leaks which can finally fill up the heap (heap overflow).
+\end{itemize}
+
+\subsection{new}
+\label{sec:new}
+
+\begin{TPCpp}
+/*	
+	new <type> (<constructor args>);
+*/
+
+//allocation of a single variable
+int * pointer;
+pointer = new int;
+
+//allocation of a whole array
+//length does not have to be defined
+//at compiletime!
+int * another_pointer;
+another pointer = new int [length];
+\end{TPCpp}
+
+\begin{itemize}
+\item \verb+new+ allocates a new object of the desired type, calls the correct constructor as specified in the brackets and returns a pointer to the newly generated object. If no constructor is needed the brackets can be omitted.
+\end{itemize}
+
+\subsection{delete}
+\label{sec:delete}
+
+Object that are allocated using \verb+new+ have dynamic storage duration, the memory occupied by them is only released again if explicitly deleted.
+
+\begin{TPCpp}
+/*
+	delete <pointer>
+*/
+
+//delete the objects allocated above
+delete pointer;
+
+//Use delete [] for dynamically allocated arrays
+delete [] another_pointer;
+\end{TPCpp}
+
+\begin{itemize}
+\item \verb+delete+ removes dynamically allocated objects.
+\item \verb+delete+ needs a pointer to the object in order to delete it.
+\end{itemize}
 
 \section{Namespaces}
+\label{sec:Namespaces}
 
+\begin{itemize}
+\item Different libraries using the same function name call for a distinction.
+\item \verb+namespace+ allows wrapping declarations in an envelope that distinguishes them from any definition with the same name.
+\item With \verb+using namespace <namespace_name>+ the compiler is informed that functions from that namespace are used. This does not work if we introduce ambiguities:
+\item If we were \verb+using namespace n1;+ in the example below, there would be an ambiguous function overload, which leads to a compilation error.
+\item Namespaces can be discontiguous, i.e. split into different parts in different files. If part of the namespace requires a name defined in another file, that name must still be declared!
+\item There can be namespaces inside namespaces.
+\end{itemize}
+
+\begin{TPCpp}
+/*	
+namespace <namespace_name> {
+	// code declarations
+}
+*/
+
+namespace n1 {
+	void myfun(){cout<<"n1";}
+}
+
+void myfun(){cout<<"outside";}
+
+//using namespace n1; //error
+
+int main(){
+	myfun(); //outputs "outside"
+	n1::myfun(); //outputs "n1"
+}
+\end{TPCpp}
+
+\ifnum\conditionmacro=1
 \section{\ntn{Templates}}
+\label{sec:Templates}
 
 Templates are the foundation of generic programming, which in different terms is the practice of writing code in a way that is independent of any particular data type. A template can be understood as a blueprint or a formula for creating a generic class or function. The first example of templates we got to enjoy was \verb+vector+ which was always handed its specific data type via angled brackets.
 
-\subsection{\ntn{Template function}}
+\subsection{\ntn{Template Function}}
+\label{sec:TemplateFunction}
 
 \begin{TPCpp}
 /* general form of a template
@@ -2634,7 +3424,8 @@ int main(){
 	Max(s1,s2); //return "World";
 \end{TPCpp}
 
-\subsection{\ntn{Template class}}
+\subsection{\ntn{Template Class}}
+\label{sec:TemplateClass}
 
 \begin{TPCpp}
 /* general form a of a template class
@@ -2690,8 +3481,10 @@ cout<<stringStack.top();
 //we just made ourselves 
 //a nice implementation of hello world ;)
 \end{TPCpp}
+\fi
 
 \section{Standard Template Library}
+\label{sec:StandardTemplateLibrary}
 
 The C++ STL (\easyurl{Standard Template Library}{https://www.tutorialspoint.com/cplusplus/cpp_stl_tutorial.htm}) is a powerful set of C++ template classes to provide general-purpose classes and functions with templates that implement many popular and commonly used algorithms and data structures like vectors, lists, queues, and stacks.
 
